@@ -1,0 +1,63 @@
+"""
+
+Simple Linear Regression tk
+Jack Nickelson
+
+"""
+
+import tkinter as tk
+from tkinter import *
+import numpy as np
+
+slwindow=tk.Tk()
+slwindow.title("Simple Linear Regression")
+slwindow.geometry("800x500")
+slwindow['bg']= "#cfe2f3"
+
+# Calculating simple linear regression
+def simple_linear():
+    x_var = [float(x) for x in x_varnum.get().split(' ')]
+    y_var = [float(y) for y in y_varnum.get().split(' ')]
+    x_array = np.array([x_var])
+    y_array = np.array([y_var])
+    x_mean = x_array.mean()
+    y_mean = y_array.mean()
+    #x_std = x_array.std()
+    #y_std = y_array.std()
+    x_distfrommean = x_array - x_mean
+    y_distfrommean = y_array - y_mean
+    ssx = np.sum(np.power(x_distfrommean,2))
+    ssy = np.sum(np.power(y_distfrommean,2))
+    sumxyproducts = np.sum(x_distfrommean * y_distfrommean)    
+    beta1 = sumxyproducts / ssx
+    beta0 = y_mean - (beta1*x_mean)
+    correlationcoefficient = sumxyproducts / np.sqrt(ssx*ssy)
+    display.insert(0, "Y = {} + {}X".format(beta0, beta1))
+ 
+# Labels for user input
+welcome_label=tk.Label(slwindow, text="Welcome to the Simple Linear Relationship estimator: Input the values for X and Y (separate with spacebar)", pady=10, padx=30, relief=RAISED, borderwidth=15)
+x_varLabel=tk.Label(slwindow, text="Enter the values for X:", pady=10, padx=30, relief=RAISED, borderwidth=15)
+y_varLabel=tk.Label(slwindow, text="Enter the values for Y:", pady=10, padx=30, relief=RAISED, borderwidth=15)
+display_Label=tk.Label(slwindow, text="The estimated relationship is:", pady=10, padx=30, relief=RAISED, borderwidth=15, width=25)
+
+# Entry boxes for user input
+x_varnum=tk.Entry(slwindow, relief=RAISED, bd=5)
+y_varnum=tk.Entry(slwindow, relief=RAISED, bd=5)
+
+# Button to generate Z score
+simplebtn=tk.Button(slwindow, text="Calculate Linear Relationship", command=simple_linear)
+
+# Box to display Z score
+display=tk.Entry(slwindow)
+
+#Locations
+welcome_label.grid(row=0, columnspan=2)
+x_varLabel.grid(row=1, column=0)
+x_varnum.grid(row=1, column=1)
+y_varLabel.grid(row=2, column=0)
+y_varnum.grid(row=2, column=1)
+simplebtn.grid(row=3, column=1)
+display_Label.grid(row=4, column=0)
+display.grid(row=4, column=1)
+
+slwindow.mainloop()
