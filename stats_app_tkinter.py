@@ -1,6 +1,6 @@
 """
 
-Statistics Application with tkinter user interface
+Statistics Application with tkinter graphical user interface
 Find Z scores, X values for given Z scores, simple, and multiple regression
 
 Jack Nickelson
@@ -36,7 +36,7 @@ def simple_linear():
     slwindow.geometry("800x500")
     slwindow['bg']= "#cfe2f3"
     # Labels for user input
-    welcome_label=tk.Label(slwindow, text="Welcome to the Simple Linear Relationship estimator: Input the values for X and Y (separate with spacebar)", pady=10, padx=30, relief=RAISED, borderwidth=15)
+    welcome_label=tk.Label(slwindow, text="Welcome to the Simple Linear Relationship estimator: Input the values for X and Y (separate with spacebar)", pady=10, padx=30, relief=RAISED, borderwidth=15, bg='#fff2cc')
     x_varLabel=tk.Label(slwindow, text="Enter the values for X:", pady=10, padx=30, relief=RAISED, borderwidth=15)
     y_varLabel=tk.Label(slwindow, text="Enter the values for Y:", pady=10, padx=30, relief=RAISED, borderwidth=15)
     display_Label=tk.Label(slwindow, text="The estimated regression equation is:", pady=10, padx=30, relief=RAISED, borderwidth=15, width=25)
@@ -119,7 +119,7 @@ def multiple_regression2():
     mlwindow['bg']= "#cfe2f3"
 
     # Labels for user input
-    welcome_label=tk.Label(mlwindow, text="Welcome to the Multiple Linear Relationship estimator: Input the values for X and Y (separate with spacebar)", pady=10, padx=30, relief=RAISED, borderwidth=15)
+    welcome_label=tk.Label(mlwindow, text="Welcome to the Multiple Linear Relationship estimator: Input the values for X and Y (separate with spacebar)", pady=10, padx=30, relief=RAISED, borderwidth=15, bg='#fff2cc')
     x_varLabel=tk.Label(mlwindow, text="Enter the values for X1:", pady=10, padx=30, relief=RAISED, borderwidth=15)
     x2_varLabel=tk.Label(mlwindow, text="Enter the values for X2:", pady=10, padx=30, relief=RAISED, borderwidth=15)    
     y_varLabel=tk.Label(mlwindow, text="Enter the values for Y:", pady=10, padx=30, relief=RAISED, borderwidth=15)
@@ -218,7 +218,7 @@ def multiple_regression3():
     mlwindow['bg']= "#cfe2f3"
 
     # Labels for user input
-    welcome_label=tk.Label(mlwindow, text="Welcome to the Multiple Linear Relationship estimator: Input the values for X and Y (separate with spacebar)", pady=10, padx=30, relief=RAISED, borderwidth=15)
+    welcome_label=tk.Label(mlwindow, text="Welcome to the Multiple Linear Relationship estimator: Input the values for X and Y (separate with spacebar)", pady=10, padx=30, relief=RAISED, borderwidth=15, bg='#fff2cc')
     x_varLabel=tk.Label(mlwindow, text="Enter the values for X1:", pady=10, padx=30, relief=RAISED, borderwidth=15)
     x2_varLabel=tk.Label(mlwindow, text="Enter the values for X2:", pady=10, padx=30, relief=RAISED, borderwidth=15)    
     x3_varLabel=tk.Label(mlwindow, text="Enter the values for X3:", pady=10, padx=30, relief=RAISED, borderwidth=15) 
@@ -326,7 +326,7 @@ def multiple_regression4():
     mlwindow['bg']= "#cfe2f3"
 
     # Labels for user input
-    welcome_label=tk.Label(mlwindow, text="Welcome to the Multiple Linear Relationship estimator: Input the values for X and Y (separate with spacebar)", pady=10, padx=30, relief=RAISED, borderwidth=15)
+    welcome_label=tk.Label(mlwindow, text="Welcome to the Multiple Linear Relationship estimator: Input the values for X and Y (separate with spacebar)", pady=10, padx=30, relief=RAISED, borderwidth=15, bg='#fff2cc')
     x_varLabel=tk.Label(mlwindow, text="Enter the values for X1:", pady=10, padx=30, relief=RAISED, borderwidth=15)
     x2_varLabel=tk.Label(mlwindow, text="Enter the values for X2:", pady=10, padx=30, relief=RAISED, borderwidth=15)    
     x3_varLabel=tk.Label(mlwindow, text="Enter the values for X3:", pady=10, padx=30, relief=RAISED, borderwidth=15) 
@@ -445,7 +445,7 @@ def multiple_regression5():
     mlwindow['bg']= "#cfe2f3"
 
     # Labels for user input
-    welcome_label=tk.Label(mlwindow, text="Welcome to the Multiple Linear Relationship estimator: Input the values for X and Y (separate with spacebar)", pady=10, padx=30, relief=RAISED, borderwidth=15)
+    welcome_label=tk.Label(mlwindow, text="Welcome to the Multiple Linear Relationship estimator: Input the values for X and Y (separate with spacebar)", pady=10, padx=30, relief=RAISED, borderwidth=15, bg='#fff2cc')
     x_varLabel=tk.Label(mlwindow, text="Enter the values for X1:", pady=10, padx=30, relief=RAISED, borderwidth=15)
     x2_varLabel=tk.Label(mlwindow, text="Enter the values for X2:", pady=10, padx=30, relief=RAISED, borderwidth=15) 
     x3_varLabel=tk.Label(mlwindow, text="Enter the values for X3:", pady=10, padx=30, relief=RAISED, borderwidth=15)  
@@ -507,7 +507,7 @@ def zscorefun():
     zwindow.geometry("800x500")
     zwindow['bg']="#cfe2f3"    
     # Labels for user input
-    welcomelabel=tk.Label(zwindow, text="Welcome to the Z score finder!", pady=10, padx=30, relief=RAISED, borderwidth=15)
+    welcomelabel=tk.Label(zwindow, text="Welcome to the Z score finder!", pady=10, padx=30, relief=RAISED, borderwidth=15, bg='#fff2cc')
     x_barLabel=tk.Label(zwindow, text="Enter the sample mean (x-bar):", pady=10, padx=30, relief=RAISED, borderwidth=15)
     mu_Label=tk.Label(zwindow, text="Enter the mean of the population mean (mu):", pady=10, padx=30, relief=RAISED, borderwidth=15)
     pop_standard_label=tk.Label(zwindow, text="Enter the population standard deviation (sigma):", pady=10, padx=30, relief=RAISED, borderwidth=15)
@@ -552,7 +552,7 @@ def findxvaluefromz():
     window.geometry("800x500")
     window['bg']="#cfe2f3"
     # Labels for user input
-    welcomelabel=tk.Label(window, text="Welcome to the X finder!", pady=10, padx=30, relief=RAISED, borderwidth=15)
+    welcomelabel=tk.Label(window, text="Welcome to the X finder!", pady=10, padx=30, relief=RAISED, borderwidth=15, bg='#fff2cc')
     ZscoreLabel=tk.Label(window, text="Enter the Z Score:", pady=10, padx=30, relief=RAISED, borderwidth=15)
     mu_Label=tk.Label(window, text="Enter the mean of the population mean (mu):", pady=10, padx=30, relief=RAISED, borderwidth=15)
     pop_standard_label=tk.Label(window, text="Enter the population standard deviation (sigma):", pady=10, padx=30, relief=RAISED, borderwidth=15)
@@ -595,9 +595,9 @@ multiple_5iv_btn=tk.Button(statsapp, text="Multiple Linear Regression 5 IV (clic
 
 # labels
 welcome=tk.Label(statsapp, text="Welcome to the StatsApp: Select your calculation!", bg="#cfe2f3", pady=10, padx=30, relief=RAISED, borderwidth=15)
-zlabel=tk.Label(statsapp, text="Find Z | x_bar, mu, sigma ->", bg="#bacbda", pady=10, padx=30, relief=RAISED, borderwidth=15)
-x_fromz_label=tk.Label(statsapp, text="Find X | z, mu, sigma ->", bg="#90dbf4", pady=10, padx=30, relief=RAISED, borderwidth=15)
-simp_line_label=tk.Label(statsapp, text="Simple Linear Regression -->", bg='#cfbaf0', borderwidth=15, pady=10, padx=30, relief=RAISED)
+zlabel=tk.Label(statsapp, text="Find Z | x_bar, mu, sigma ------>", bg="#bacbda", pady=10, padx=30, relief=RAISED, borderwidth=15)
+x_fromz_label=tk.Label(statsapp, text="Find X | z, mu, sigma ---------->", bg="#90dbf4", pady=10, padx=30, relief=RAISED, borderwidth=15)
+simp_line_label=tk.Label(statsapp, text="Simple Linear Regression ------>", bg='#cfbaf0', borderwidth=15, pady=10, padx=30, relief=RAISED)
 multiple_2iv_label=tk.Label(statsapp, text="Multiple Linear Regression 2 IV -->", bg='#f4cccc', borderwidth=15, pady=10, padx=30, relief=RAISED)
 multiple_3iv_label=tk.Label(statsapp, text="Multiple Linear Regression 3 IV -->", bg='#bacbda', borderwidth=15, pady=10, padx=30, relief=RAISED)
 multiple_4iv_label=tk.Label(statsapp, text="Multiple Linear Regression 4 IV -->", bg='#90dbf4', borderwidth=15, pady=10, padx=30, relief=RAISED)
