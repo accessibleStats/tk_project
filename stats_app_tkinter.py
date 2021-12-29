@@ -1,7 +1,7 @@
 """
 
 Statistics Application with tkinter graphical user interface
-Find Z scores, X values for given Z scores, simple, and multiple regression
+Find Z scores, X values for given Z scores, simple, and multiple regression estimation
 
 Jack Nickelson
 """
@@ -9,64 +9,73 @@ Jack Nickelson
 from tkinter import *
 import tkinter as tk
 import numpy as np
+from numpy import sqrt
 
 ####### Simple linear regression ##########
 def simple_linear():
 # Calculating simple linear regression
     def simple_linear():
-        x_var = [float(x) for x in x_varnum.get().split(' ')]
-        y_var = [float(y) for y in y_varnum.get().split(' ')]
+        x_var = [float(x) for x in x_varnum.get().split(',')]
+        y_var = [float(y) for y in y_varnum.get().split(',')]
         x_array = np.array([x_var])
         y_array = np.array([y_var])
         x_mean = x_array.mean()
         y_mean = y_array.mean()
-        #x_std = x_array.std()
-        #y_std = y_array.std()
         x_distfrommean = x_array - x_mean
         y_distfrommean = y_array - y_mean
         ssx = np.sum(np.power(x_distfrommean,2))
         ssy = np.sum(np.power(y_distfrommean,2))
         sumxyproducts = np.sum(x_distfrommean * y_distfrommean)    
-        beta1 = sumxyproducts / ssx
-        beta0 = y_mean - (beta1*x_mean)
-        correlationcoefficient = sumxyproducts / np.sqrt(ssx*ssy)
-        display.insert(0, "Y = {} + {}X".format(beta0, beta1))
+        beta1 = round(sumxyproducts / ssx,4)
+        beta0 = round(y_mean - (beta1*x_mean),4)
+        correlationcoefficient = round(sumxyproducts / np.sqrt(ssx*ssy),4)
+        r_squared=round(correlationcoefficient**2,4)
+        # clear display text box with each click and then display results
+        display_reg_eq.delete(0,END)
+        display_r.delete(0,END)
+        display_r_sq.delete(0,END)
+        display_reg_eq.insert(0, "Y = {} + {}X".format(beta0, beta1))
+        display_r.insert(0, "Correlation r = {}".format(correlationcoefficient))
+        display_r_sq.insert(0, "R Squared = {}".format(r_squared))
     slwindow=tk.Toplevel()
     slwindow.title("Simple Linear Regression")
     slwindow.geometry("800x500")
     slwindow['bg']= "#cfe2f3"
     # Labels for user input
-    welcome_label=tk.Label(slwindow, text="Welcome to the Simple Linear Relationship estimator: Input the values for X and Y (separate with spacebar)", pady=10, padx=30, relief=RAISED, borderwidth=15, bg='#fff2cc')
-    x_varLabel=tk.Label(slwindow, text="Enter the values for X:", pady=10, padx=30, relief=RAISED, borderwidth=15)
-    y_varLabel=tk.Label(slwindow, text="Enter the values for Y:", pady=10, padx=30, relief=RAISED, borderwidth=15)
-    display_Label=tk.Label(slwindow, text="The estimated regression equation is:", pady=10, padx=30, relief=RAISED, borderwidth=15, width=25)
+    welcome_label=tk.Label(slwindow, text="Welcome to the Simple Linear Relationship estimator: Input the values for X and Y (separate with a comma)", pady=10, padx=30, relief=RAISED, borderwidth=10, bg='#fff2cc')
     # Entry boxes for user input
-    x_varnum=tk.Entry(slwindow, relief=RAISED, bd=5)
-    y_varnum=tk.Entry(slwindow, relief=RAISED, bd=5)
+    x_varnum=tk.Entry(slwindow, relief=RAISED, bd=5, width=30)
+    y_varnum=tk.Entry(slwindow, relief=RAISED, bd=5, width=30)
+    x_varnum.insert(0, "Enter the values for X")
+    y_varnum.insert(0,"Enter values for Y")
     # Button to generate Z score
-    simplebtn=tk.Button(slwindow, text="Calculate Linear Relationship", command=simple_linear, highlightbackground="blue")
+    simplebtn=tk.Button(slwindow, text="Estimate Regression Equation (Click Here)", command=simple_linear, highlightbackground="gray")
     # Display box
-    display=tk.Entry(slwindow, highlightbackground="blue")
+    display_reg_eq=tk.Entry(slwindow, highlightbackground="gray", width=40)
+    display_r=tk.Entry(slwindow, highlightbackground="gray", width=40)
+    display_r_sq=tk.Entry(slwindow, highlightbackground="gray", width=40)
+    display_reg_eq.insert(0,"The estimated regression equation will appear here!")
+    display_r.insert(0,"The estimated correlation r will appear here!")
+    display_r_sq.insert(0,"The estimated r-squared will appear here!")
     # Locations
-    welcome_label.grid(row=0, columnspan=2)
-    x_varLabel.grid(row=1, column=0)
-    x_varnum.grid(row=1, column=1)
-    y_varLabel.grid(row=2, column=0)
-    y_varnum.grid(row=2, column=1)
-    simplebtn.grid(row=3, column=1)
-    display_Label.grid(row=4, column=0)
-    display.grid(row=4, column=1)
+    welcome_label.grid(row=0)
+    x_varnum.grid(row=1)
+    y_varnum.grid(row=2)
+    simplebtn.grid(row=3)
+    display_reg_eq.grid(row=4)
+    display_r.grid(row=5)
+    display_r_sq.grid(row=6)
 ##########################################
 
 ######## Multiple Linear Regression (2 independent variables)
 # Estimating regression model using numpy linear algebra
 def multiple_regression2():
     def userinputx():
-        x1 = [float(x) for x in x_varnum.get().split(' ')]
+        x1 = [float(x) for x in x_varnum.get().split(',')]
         x1 = np.array(x1)
         x1 = x1.astype(np.float64)
         x1 = x1[...,None]
-        x2 = [float(x) for x in x2_varnum.get().split(' ')]
+        x2 = [float(x) for x in x2_varnum.get().split(',')]
         x2 = np.array(x2)
         x2 = x2.astype(np.float64)
         x2 = x2[...,None]
@@ -74,12 +83,11 @@ def multiple_regression2():
         return x_matrix
     ##### Y variable
     def userinputy():    
-        y = [float(y) for y in y_varnum.get().split(' ')]
+        y = [float(y) for y in y_varnum.get().split(',')]
         y = np.array(y)
         y = y.astype(np.float64)
         y = y[...,None]
         return y
-        #y_float = y_array.astype(np.float64)
 
     # function calls userinput function, transforms concatenated arrays into np.matrix
     def xmatrix():
@@ -102,69 +110,69 @@ def multiple_regression2():
         beta_hat = np.linalg.inv(xtranspose.dot(X)).dot(xtranspose).dot(Y)
         beta_hat=np.array(beta_hat)
         beta_hat=beta_hat[None,...]
+        # store estimated coefficients
         beta_zero=beta_hat[0,0]
         beta_one=beta_hat[0,1]
         beta_two=beta_hat[0,2]
-        print(type(beta_hat))
-        print(beta_zero)
-        print(beta_one)
-        print(beta_two)
+        # round coefficients to 4 decimal places
+        beta_zero=np.float64(beta_zero)
+        beta_zero=round(beta_zero,4)
+        beta_one=np.float64(beta_one)
+        beta_one=round(beta_one,4)
+        beta_two=np.float64(beta_two)
+        beta_two=round(beta_two,4)
+        # clear display text box with each click and then display results
+        display.delete(0,END)
         display.insert(0, "Y = {}+ {}X_1 + {}X_2".format(beta_zero,beta_one,beta_two))
 
 
     # main window information
     mlwindow=tk.Toplevel()
     mlwindow.title("Multiple Linear Regression")
-    mlwindow.geometry("800x800")
+    mlwindow.geometry("800x400")
     mlwindow['bg']= "#cfe2f3"
 
     # Labels for user input
-    welcome_label=tk.Label(mlwindow, text="Welcome to the Multiple Linear Relationship estimator: Input the values for X and Y (separate with spacebar)", pady=10, padx=30, relief=RAISED, borderwidth=15, bg='#fff2cc')
-    x_varLabel=tk.Label(mlwindow, text="Enter the values for X1:", pady=10, padx=30, relief=RAISED, borderwidth=15)
-    x2_varLabel=tk.Label(mlwindow, text="Enter the values for X2:", pady=10, padx=30, relief=RAISED, borderwidth=15)    
-    y_varLabel=tk.Label(mlwindow, text="Enter the values for Y:", pady=10, padx=30, relief=RAISED, borderwidth=15)
-    display_Label=tk.Label(mlwindow, text="The estimated regression equation is:", pady=10, padx=30, relief=RAISED, borderwidth=15, width=25)
-
+    welcome_label=tk.Label(mlwindow, text="Welcome to the Multiple Linear Relationship estimator: Input the values for X and Y (separate with comma)", pady=10, padx=30, relief=RAISED, borderwidth=10, bg='#fff2cc')
     # Entry boxes for user input
     x_varnum=StringVar()
     x2_varnum=StringVar()
-
     y_varnum=StringVar()
     # Entry boxes for user input
-    x_varnum=tk.Entry(mlwindow, textvariable=x_varnum, relief=RAISED, bd=5, borderwidth=15)
-    x2_varnum=tk.Entry(mlwindow, textvariable=x2_varnum, relief=RAISED, bd=5, borderwidth=15)
-    y_varnum=tk.Entry(mlwindow, textvariable=y_varnum, relief=RAISED, bd=5, borderwidth=15)
+    x_varnum=tk.Entry(mlwindow, textvariable=x_varnum, relief=RAISED, bd=5, borderwidth=5)
+    x2_varnum=tk.Entry(mlwindow, textvariable=x2_varnum, relief=RAISED, bd=5, borderwidth=5)
+    y_varnum=tk.Entry(mlwindow, textvariable=y_varnum, relief=RAISED, bd=5, borderwidth=5)
+    x_varnum.insert(0, "Enter values for X_1")
+    x2_varnum.insert(0, "Enter values for X_2")
+    y_varnum.insert(0, "Enter values for Y")
 
     # Button to regression coefficients
-    simplebtn=tk.Button(mlwindow, text="Calculate Linear Relationship", command=multiple_reg, relief=RAISED, borderwidth=15, highlightbackground="blue")
+    simplebtn=tk.Button(mlwindow, text="Estimate the regression equation (Click Here)", command=multiple_reg, borderwidth=5)
     # Display box
-    display=tk.Entry(mlwindow, relief=RAISED, bd=5, borderwidth=10, highlightbackground="blue", width=70)
+    display=tk.Entry(mlwindow, relief=RAISED, bd=5, borderwidth=5, highlightbackground="#cfe2f3", width=70)
+    display.insert(0,"The estimated regression equation will appear here!")
     # Locations
-    welcome_label.grid(row=0, columnspan=2)
-    x_varLabel.grid(row=1, column=0)
-    x_varnum.grid(row=1, column=1)
-    x2_varLabel.grid(row=2, column=0)
-    x2_varnum.grid(row=2, column=1) 
-    y_varLabel.grid(row=7, column=0)
-    y_varnum.grid(row=7, column=1)
-    simplebtn.grid(row=8, column=1)
-    display_Label.grid(row=8, column=0)
-    display.grid(row=9, columnspan=2)
+    welcome_label.grid(row=0)
+    x_varnum.grid(row=1)
+    x2_varnum.grid(row=2) 
+    y_varnum.grid(row=7)
+    simplebtn.grid(row=8)
+    display.grid(row=9)
 ##########################################
 
 ######## Multiple Linear Regression (3 independent variables)
 # Estimating regression model using numpy linear algebra
 def multiple_regression3():
     def userinputx():
-        x1 = [float(x) for x in x_varnum.get().split(' ')]
+        x1 = [float(x) for x in x_varnum.get().split(',')]
         x1 = np.array(x1)
         x1 = x1.astype(np.float64)
         x1 = x1[...,None]
-        x2 = [float(x) for x in x2_varnum.get().split(' ')]
+        x2 = [float(x) for x in x2_varnum.get().split(',')]
         x2 = np.array(x2)
         x2 = x2.astype(np.float64)
         x2 = x2[...,None]
-        x3 = [float(x) for x in x3_varnum.get().split(' ')]
+        x3 = [float(x) for x in x3_varnum.get().split(',')]
         x3 = np.array(x3)
         x3 = x3.astype(np.float64)
         x3 = x3[...,None]
@@ -172,12 +180,11 @@ def multiple_regression3():
         return x_matrix
     ##### Y variable
     def userinputy():    
-        y = [float(y) for y in y_varnum.get().split(' ')]
+        y = [float(y) for y in y_varnum.get().split(',')]
         y = np.array(y)
         y = y.astype(np.float64)
         y = y[...,None]
         return y
-        #y_float = y_array.astype(np.float64)
 
     # function calls userinput function, transforms concatenated arrays into np.matrix
     def xmatrix():
@@ -204,55 +211,55 @@ def multiple_regression3():
         beta_one=beta_hat[0,1]
         beta_two=beta_hat[0,2]
         beta_three=beta_hat[0,3]
-        print(type(beta_hat))
-        print(beta_zero)
-        print(beta_one)
-        print(beta_two)
+        # round coefficients to 4 decimal places
+        beta_zero=np.float64(beta_zero)
+        beta_zero=round(beta_zero,4)
+        beta_one=np.float64(beta_one)
+        beta_one=round(beta_one,4)
+        beta_two=np.float64(beta_two)
+        beta_two=round(beta_two,4)
+        beta_three=np.float64(beta_three)
+        beta_three=round(beta_three,4)
+        # clear display text box with each click and then display results
+        display.delete(0,END)
         display.insert(0, "Y = {}+ {}X_1 + {}X_2 + {}X_3".format(beta_zero,beta_one,beta_two,beta_three))
-
 
     # main window information
     mlwindow=tk.Toplevel()
     mlwindow.title("Multiple Linear Regression")
-    mlwindow.geometry("800x800")
+    mlwindow.geometry("800x400")
     mlwindow['bg']= "#cfe2f3"
 
     # Labels for user input
-    welcome_label=tk.Label(mlwindow, text="Welcome to the Multiple Linear Relationship estimator: Input the values for X and Y (separate with spacebar)", pady=10, padx=30, relief=RAISED, borderwidth=15, bg='#fff2cc')
-    x_varLabel=tk.Label(mlwindow, text="Enter the values for X1:", pady=10, padx=30, relief=RAISED, borderwidth=15)
-    x2_varLabel=tk.Label(mlwindow, text="Enter the values for X2:", pady=10, padx=30, relief=RAISED, borderwidth=15)    
-    x3_varLabel=tk.Label(mlwindow, text="Enter the values for X3:", pady=10, padx=30, relief=RAISED, borderwidth=15) 
-    y_varLabel=tk.Label(mlwindow, text="Enter the values for Y:", pady=10, padx=30, relief=RAISED, borderwidth=15)
-    display_Label=tk.Label(mlwindow, text="The estimated regression equation is:", pady=10, padx=30, relief=RAISED, borderwidth=15, width=25)
-
+    welcome_label=tk.Label(mlwindow, text="Welcome to the Multiple Linear Relationship estimator: Input the values for X and Y (separate a comma)", pady=10, padx=30, relief=RAISED, borderwidth=15, bg='#fff2cc')
     # Entry boxes for user input
     x_varnum=StringVar()
     x2_varnum=StringVar()
     x3_varnum=StringVar()
     y_varnum=StringVar()
     # Entry boxes for user input
-    x_varnum=tk.Entry(mlwindow, textvariable=x_varnum, relief=RAISED, bd=5, borderwidth=15)
-    x2_varnum=tk.Entry(mlwindow, textvariable=x2_varnum, relief=RAISED, bd=5, borderwidth=15)
-    x3_varnum=tk.Entry(mlwindow, textvariable=x3_varnum, relief=RAISED, bd=5, borderwidth=15)
-    y_varnum=tk.Entry(mlwindow, textvariable=y_varnum, relief=RAISED, bd=5, borderwidth=15)
-
-    # Button to generate Z score
-    simplebtn=tk.Button(mlwindow, text="Calculate Linear Relationship", command=multiple_reg, relief=RAISED, borderwidth=15, highlightbackground="blue")
+    x_varnum=tk.Entry(mlwindow, textvariable=x_varnum, relief=RAISED, bd=5, borderwidth=5)
+    x2_varnum=tk.Entry(mlwindow, textvariable=x2_varnum, relief=RAISED, bd=5, borderwidth=5)
+    x3_varnum=tk.Entry(mlwindow, textvariable=x3_varnum, relief=RAISED, bd=5, borderwidth=5)
+    y_varnum=tk.Entry(mlwindow, textvariable=y_varnum, relief=RAISED, bd=5, borderwidth=5)
+    # text inside of entry boxes
+    x_varnum.insert(0,"Enter the values for X1")
+    x2_varnum.insert(0,"Enter the values for X2")
+    x3_varnum.insert(0,"Enter the values for X3")
+    y_varnum.insert(0,"Enter the values for Y")
+    # Button to estimate regression equation
+    simplebtn=tk.Button(mlwindow, text="Estimate Regression Equation (Click Here)", command=multiple_reg, relief=RAISED, borderwidth=10)
     # Display box
-    display=tk.Entry(mlwindow, relief=RAISED, bd=5, borderwidth=10, highlightbackground="blue", width=70)
+    display=tk.Entry(mlwindow, relief=RAISED, bd=5, borderwidth=5, highlightbackground="#cfe2f3", width=70)
+    display.insert(0,"The estimated regression equation will appear here!")
     # Locations
-    welcome_label.grid(row=0, columnspan=2)
-    x_varLabel.grid(row=1, column=0)
-    x_varnum.grid(row=1, column=1)
-    x2_varLabel.grid(row=2, column=0)
-    x2_varnum.grid(row=2, column=1) 
-    x3_varLabel.grid(row=3, column=0)
-    x3_varnum.grid(row=3, column=1) 
-    y_varLabel.grid(row=7, column=0)
-    y_varnum.grid(row=7, column=1)
-    simplebtn.grid(row=8, column=1)
-    display_Label.grid(row=8, column=0)
-    display.grid(row=9, columnspan=2)
+    welcome_label.grid(row=0)
+    x_varnum.grid(row=1)
+    x2_varnum.grid(row=2) 
+    x3_varnum.grid(row=3) 
+    y_varnum.grid(row=7)
+    simplebtn.grid(row=8)
+    display.grid(row=9)
 ##########################################
 ##########################################
 
@@ -260,19 +267,19 @@ def multiple_regression3():
 # Estimating regression model using numpy linear algebra
 def multiple_regression4():
     def userinputx():
-        x1 = [float(x) for x in x_varnum.get().split(' ')]
+        x1 = [float(x) for x in x_varnum.get().split(',')]
         x1 = np.array(x1)
         x1 = x1.astype(np.float64)
         x1 = x1[...,None]
-        x2 = [float(x) for x in x2_varnum.get().split(' ')]
+        x2 = [float(x) for x in x2_varnum.get().split(',')]
         x2 = np.array(x2)
         x2 = x2.astype(np.float64)
         x2 = x2[...,None]
-        x3 = [float(x) for x in x3_varnum.get().split(' ')]
+        x3 = [float(x) for x in x3_varnum.get().split(',')]
         x3 = np.array(x3)
         x3 = x3.astype(np.float64)
         x3 = x3[...,None]
-        x4 = [float(x) for x in x4_varnum.get().split(' ')]
+        x4 = [float(x) for x in x4_varnum.get().split(',')]
         x4 = np.array(x4)
         x4 = x4.astype(np.float64)
         x4 = x4[...,None]
@@ -280,7 +287,7 @@ def multiple_regression4():
         return x_matrix
 ##### Y variable
     def userinputy():    
-        y = [float(y) for y in y_varnum.get().split(' ')]
+        y = [float(y) for y in y_varnum.get().split(',')]
         y = np.array(y)
         y = y.astype(np.float64)
         y = y[...,None]
@@ -313,27 +320,29 @@ def multiple_regression4():
         beta_two=beta_hat[0,2]
         beta_three=beta_hat[0,3]
         beta_four=beta_hat[0,4]
-        print(type(beta_hat))
-        print(beta_zero)
-        print(beta_one)
-        print(beta_two)
+        # round coefficients to 4 decimal places
+        beta_zero=np.float64(beta_zero)
+        beta_zero=round(beta_zero,4)
+        beta_one=np.float64(beta_one)
+        beta_one=round(beta_one,4)
+        beta_two=np.float64(beta_two)
+        beta_two=round(beta_two,4)
+        beta_three=np.float64(beta_three)
+        beta_three=round(beta_three,4)
+        beta_four=np.float64(beta_four)
+        beta_four=round(beta_four,4)
+        # clear display text box with each click and then display results
+        display.delete(0,END)
         display.insert(0, "Y = {}+ {}X_1 + {}X_2 + {}X_3 + {}X_4".format(beta_zero,beta_one,beta_two,beta_three,beta_four))
 
     # main window information
     mlwindow=tk.Toplevel()
     mlwindow.title("Multiple Linear Regression")
-    mlwindow.geometry("800x800")
+    mlwindow.geometry("800x400")
     mlwindow['bg']= "#cfe2f3"
 
-    # Labels for user input
-    welcome_label=tk.Label(mlwindow, text="Welcome to the Multiple Linear Relationship estimator: Input the values for X and Y (separate with spacebar)", pady=10, padx=30, relief=RAISED, borderwidth=15, bg='#fff2cc')
-    x_varLabel=tk.Label(mlwindow, text="Enter the values for X1:", pady=10, padx=30, relief=RAISED, borderwidth=15)
-    x2_varLabel=tk.Label(mlwindow, text="Enter the values for X2:", pady=10, padx=30, relief=RAISED, borderwidth=15)    
-    x3_varLabel=tk.Label(mlwindow, text="Enter the values for X3:", pady=10, padx=30, relief=RAISED, borderwidth=15) 
-    x4_varLabel=tk.Label(mlwindow, text="Enter the values for X4:", pady=10, padx=30, relief=RAISED, borderwidth=15)  
-    y_varLabel=tk.Label(mlwindow, text="Enter the values for Y:", pady=10, padx=30, relief=RAISED, borderwidth=15)
-    display_Label=tk.Label(mlwindow, text="The estimated regression equation is:", pady=10, padx=30, relief=RAISED, borderwidth=15, width=25)
-
+    # Labels for welcome label
+    welcome_label=tk.Label(mlwindow, text="Welcome to the Multiple Linear Relationship estimator: Input the values for X and Y (separate with a comma)", pady=10, padx=30, relief=RAISED, borderwidth=15, bg='#fff2cc')
     # Entry boxes for user input
     x_varnum=StringVar()
     x2_varnum=StringVar()
@@ -341,31 +350,32 @@ def multiple_regression4():
     x4_varnum=StringVar()
     y_varnum=StringVar()
     # Entry boxes for user input
-    x_varnum=tk.Entry(mlwindow, textvariable=x_varnum, relief=RAISED, bd=5, borderwidth=15)
-    x2_varnum=tk.Entry(mlwindow, textvariable=x2_varnum, relief=RAISED, bd=5, borderwidth=15)
-    x3_varnum=tk.Entry(mlwindow, textvariable=x3_varnum, relief=RAISED, bd=5, borderwidth=15)
-    x4_varnum=tk.Entry(mlwindow, textvariable=x3_varnum, relief=RAISED, bd=5, borderwidth=15)
-    y_varnum=tk.Entry(mlwindow, textvariable=y_varnum, relief=RAISED, bd=5, borderwidth=15)
+    x_varnum=tk.Entry(mlwindow, textvariable=x_varnum, relief=RAISED, bd=5, borderwidth=5)
+    x2_varnum=tk.Entry(mlwindow, textvariable=x2_varnum, relief=RAISED, bd=5, borderwidth=5)
+    x3_varnum=tk.Entry(mlwindow, textvariable=x3_varnum, relief=RAISED, bd=5, borderwidth=5)
+    x4_varnum=tk.Entry(mlwindow, textvariable=x3_varnum, relief=RAISED, bd=5, borderwidth=5)
+    y_varnum=tk.Entry(mlwindow, textvariable=y_varnum, relief=RAISED, bd=5, borderwidth=5)
+    # text inside of entry boxes
+    x_varnum.insert(0,"Enter the values for X1")
+    x2_varnum.insert(0,"Enter the values for X2")
+    x3_varnum.insert(0,"Enter the values for X3")
+    x4_varnum.insert(0,"Enter the values for X4")
+    y_varnum.insert(0,"Enter the values for Y")
 
     # Button to generate Z score
-    simplebtn=tk.Button(mlwindow, text="Calculate Linear Relationship", command=multiple_reg, relief=RAISED, borderwidth=15, highlightbackground="blue")
+    simplebtn=tk.Button(mlwindow, text="Estimate Regression Equation (Click Here)", command=multiple_reg, relief=RAISED, borderwidth=5)
     # Display box
-    display=tk.Entry(mlwindow, relief=RAISED, bd=5, borderwidth=10, highlightbackground="blue", width=70)
+    display=tk.Entry(mlwindow, relief=RAISED, bd=5, borderwidth=10, highlightbackground="#cfe2f3", width=70)
+    display.insert(0,"The estimated regression equation will appear here!")
     # Locations
-    welcome_label.grid(row=0, columnspan=2)
-    x_varLabel.grid(row=1, column=0)
-    x_varnum.grid(row=1, column=1)
-    x2_varLabel.grid(row=2, column=0)
-    x2_varnum.grid(row=2, column=1) 
-    x3_varLabel.grid(row=3, column=0)
-    x3_varnum.grid(row=3, column=1) 
-    x4_varLabel.grid(row=4, column=0)
-    x4_varnum.grid(row=4, column=1) 
-    y_varLabel.grid(row=7, column=0)
-    y_varnum.grid(row=7, column=1)
-    simplebtn.grid(row=8, column=1)
-    display_Label.grid(row=8, column=0)
-    display.grid(row=9, columnspan=2)
+    welcome_label.grid(row=0)
+    x_varnum.grid(row=1)
+    x2_varnum.grid(row=2) 
+    x3_varnum.grid(row=3) 
+    x4_varnum.grid(row=4) 
+    y_varnum.grid(row=7)
+    simplebtn.grid(row=8)
+    display.grid(row=9)
 ##########################################
 ##########################################
 
@@ -373,23 +383,23 @@ def multiple_regression4():
 # Estimating regression model using numpy linear algebra
 def multiple_regression5():
     def userinputx():
-        x1 = [float(x) for x in x_varnum.get().split(' ')]
+        x1 = [float(x) for x in x_varnum.get().split(',')]
         x1 = np.array(x1)
         x1 = x1.astype(np.float64)
         x1 = x1[...,None]
-        x2 = [float(x) for x in x2_varnum.get().split(' ')]
+        x2 = [float(x) for x in x2_varnum.get().split(',')]
         x2 = np.array(x2)
         x2 = x2.astype(np.float64)
         x2 = x2[...,None]
-        x3 = [float(x) for x in x3_varnum.get().split(' ')]
+        x3 = [float(x) for x in x3_varnum.get().split(',')]
         x3 = np.array(x3)
         x3 = x3.astype(np.float64)
         x3 = x3[...,None]
-        x4 = [float(x) for x in x4_varnum.get().split(' ')]
+        x4 = [float(x) for x in x4_varnum.get().split(',')]
         x4 = np.array(x4)
         x4 = x4.astype(np.float64)
         x4 = x4[...,None]
-        x5 = [float(x) for x in x5_varnum.get().split(' ')]
+        x5 = [float(x) for x in x5_varnum.get().split(',')]
         x5 = np.array(x5)
         x5 = x5.astype(np.float64)
         x5 = x5[...,None]
@@ -397,7 +407,7 @@ def multiple_regression5():
         return x_matrix
     ##### Y variable
     def userinputy():    
-        y = [float(y) for y in y_varnum.get().split(' ')]
+        y = [float(y) for y in y_varnum.get().split(',')]
         y = np.array(y)
         y = y.astype(np.float64)
         y = y[...,None]
@@ -431,29 +441,32 @@ def multiple_regression5():
         beta_three=beta_hat[0,3]
         beta_four=beta_hat[0,4]
         beta_five=beta_hat[0,5]
-        print(type(beta_hat))
-        print(beta_zero)
-        print(beta_one)
-        print(beta_two)
+        # round coefficients to 4 decimal places
+        beta_zero=np.float64(beta_zero)
+        beta_zero=round(beta_zero,4)
+        beta_one=np.float64(beta_one)
+        beta_one=round(beta_one,4)
+        beta_two=np.float64(beta_two)
+        beta_two=round(beta_two,4)
+        beta_three=np.float64(beta_three)
+        beta_three=round(beta_three,4)
+        beta_four=np.float64(beta_four)
+        beta_four=round(beta_four,4)
+        beta_five=np.float64(beta_five)
+        beta_five=round(beta_five,4)
+        # clear display text box with each click and then display results
+        display.delete(0,END)
         display.insert(0, "Y = {}+ {}X_1 + {}X_2 + {}X_3 + {}X_4 + {}X_5".format(beta_zero,beta_one,beta_two,beta_three,beta_four,beta_five))
 
 
     # main window information
     mlwindow=tk.Toplevel()
     mlwindow.title("Multiple Linear Regression")
-    mlwindow.geometry("800x800")
+    mlwindow.geometry("800x400")
     mlwindow['bg']= "#cfe2f3"
 
-    # Labels for user input
+    # Label for welcome
     welcome_label=tk.Label(mlwindow, text="Welcome to the Multiple Linear Relationship estimator: Input the values for X and Y (separate with spacebar)", pady=10, padx=30, relief=RAISED, borderwidth=15, bg='#fff2cc')
-    x_varLabel=tk.Label(mlwindow, text="Enter the values for X1:", pady=10, padx=30, relief=RAISED, borderwidth=15)
-    x2_varLabel=tk.Label(mlwindow, text="Enter the values for X2:", pady=10, padx=30, relief=RAISED, borderwidth=15) 
-    x3_varLabel=tk.Label(mlwindow, text="Enter the values for X3:", pady=10, padx=30, relief=RAISED, borderwidth=15)  
-    x4_varLabel=tk.Label(mlwindow, text="Enter the values for X4:", pady=10, padx=30, relief=RAISED, borderwidth=15)   
-    x5_varLabel=tk.Label(mlwindow, text="Enter the values for X5:", pady=10, padx=30, relief=RAISED, borderwidth=15)  
-    y_varLabel=tk.Label(mlwindow, text="Enter the values for Y:", pady=10, padx=30, relief=RAISED, borderwidth=15)
-    display_Label=tk.Label(mlwindow, text="The estimated regression equation is:", pady=10, padx=30, relief=RAISED, borderwidth=15, width=25)
-
     # Entry boxes for user input
     x_varnum=StringVar()
     x2_varnum=StringVar()
@@ -462,34 +475,34 @@ def multiple_regression5():
     x5_varnum=StringVar()
     y_varnum=StringVar()
     # Entry boxes for user input
-    x_varnum=tk.Entry(mlwindow, textvariable=x_varnum, relief=RAISED, bd=5, borderwidth=15)
-    x2_varnum=tk.Entry(mlwindow, textvariable=x2_varnum, relief=RAISED, bd=5, borderwidth=15)
-    x3_varnum=tk.Entry(mlwindow, textvariable=x3_varnum, relief=RAISED, bd=5, borderwidth=15)
-    x4_varnum=tk.Entry(mlwindow, textvariable=x4_varnum, relief=RAISED, bd=5, borderwidth=15)
-    x5_varnum=tk.Entry(mlwindow, textvariable=x5_varnum, relief=RAISED, bd=5, borderwidth=15)
-    y_varnum=tk.Entry(mlwindow, textvariable=y_varnum, relief=RAISED, bd=5, borderwidth=15)
-
+    x_varnum=tk.Entry(mlwindow, textvariable=x_varnum, relief=RAISED, bd=5, borderwidth=5)
+    x2_varnum=tk.Entry(mlwindow, textvariable=x2_varnum, relief=RAISED, bd=5, borderwidth=5)
+    x3_varnum=tk.Entry(mlwindow, textvariable=x3_varnum, relief=RAISED, bd=5, borderwidth=5)
+    x4_varnum=tk.Entry(mlwindow, textvariable=x4_varnum, relief=RAISED, bd=5, borderwidth=5)
+    x5_varnum=tk.Entry(mlwindow, textvariable=x5_varnum, relief=RAISED, bd=5, borderwidth=5)
+    y_varnum=tk.Entry(mlwindow, textvariable=y_varnum, relief=RAISED, bd=5, borderwidth=5)
+    # text inside of entry boxes
+    x_varnum.insert(0,"Enter the values for X1")
+    x2_varnum.insert(0,"Enter the values for X2")
+    x3_varnum.insert(0,"Enter the values for X3")
+    x4_varnum.insert(0,"Enter the values for X4")
+    x5_varnum.insert(0,"Enter the values for X5")
+    y_varnum.insert(0,"Enter the values for Y")
     # Button to regression coefficients
-    simplebtn=tk.Button(mlwindow, text="Calculate Linear Relationship", command=multiple_reg, relief=RAISED, borderwidth=15, highlightbackground="blue")
+    simplebtn=tk.Button(mlwindow, text="Estimate Regression Equation (Click Here)", command=multiple_reg, relief=RAISED, borderwidth=15, highlightbackground="#cfe2f3")
     # Display box
-    display=tk.Entry(mlwindow, relief=RAISED, bd=5, borderwidth=10, highlightbackground="blue", width=70)
+    display=tk.Entry(mlwindow, relief=RAISED, bd=5, borderwidth=10, width=70)
+    display.insert(0,"The estimated regression equation will appear here!")
     # Locations
-    welcome_label.grid(row=0, columnspan=2)
-    x_varLabel.grid(row=1, column=0)
-    x_varnum.grid(row=1, column=1)
-    x2_varLabel.grid(row=2, column=0)
-    x2_varnum.grid(row=2, column=1) 
-    x3_varLabel.grid(row=3, column=0)
-    x3_varnum.grid(row=3, column=1)   
-    x4_varLabel.grid(row=4, column=0)
-    x4_varnum.grid(row=4, column=1)  
-    x5_varLabel.grid(row=5, column=0)
-    x5_varnum.grid(row=5, column=1)   
-    y_varLabel.grid(row=7, column=0)
-    y_varnum.grid(row=7, column=1)
-    simplebtn.grid(row=8, column=1)
-    display_Label.grid(row=8, column=0)
-    display.grid(row=9, columnspan=2)
+    welcome_label.grid(row=0)
+    x_varnum.grid(row=1)
+    x2_varnum.grid(row=2) 
+    x3_varnum.grid(row=3)   
+    x4_varnum.grid(row=4)  
+    x5_varnum.grid(row=5)   
+    y_varnum.grid(row=7)
+    simplebtn.grid(row=8)
+    display.grid(row=9)
 ###########################################
 
 ####### Z scores (solve for Z) ##########
@@ -500,41 +513,39 @@ def zscorefun():
         mu = float(mu_num.get())
         standard = float(pop_standard_num.get())
         obs = float(obs_num.get())
-        z_score = (x_bar - mu) / (standard/sqrt(obs))
+        # round z score
+        z_score = round((x_bar - mu) / (standard/sqrt(obs)),4)
+        # clear display box with each click
+        display.delete(0, END)
         display.insert(0, z_score)
     ### open window for Z score calculation
     zwindow=tk.Toplevel()
-    zwindow.geometry("800x500")
+    zwindow.geometry("300x300")
     zwindow['bg']="#cfe2f3"    
-    # Labels for user input
+    # Labels for welcome label
     welcomelabel=tk.Label(zwindow, text="Welcome to the Z score finder!", pady=10, padx=30, relief=RAISED, borderwidth=15, bg='#fff2cc')
-    x_barLabel=tk.Label(zwindow, text="Enter the sample mean (x-bar):", pady=10, padx=30, relief=RAISED, borderwidth=15)
-    mu_Label=tk.Label(zwindow, text="Enter the mean of the population mean (mu):", pady=10, padx=30, relief=RAISED, borderwidth=15)
-    pop_standard_label=tk.Label(zwindow, text="Enter the population standard deviation (sigma):", pady=10, padx=30, relief=RAISED, borderwidth=15)
-    obs_Label=tk.Label(zwindow, text="Enter the number of observations (n):", pady=10, padx=30, relief=RAISED, borderwidth=15)
-    display_Label=tk.Label(zwindow, text="The Z score is:", pady=10, padx=30, relief=RAISED, borderwidth=15)
     # Entry boxes for user input
     x_barnum=tk.Entry(zwindow, relief=RAISED, bd=5)
     mu_num=tk.Entry(zwindow, relief=RAISED, bd=5)
     pop_standard_num=tk.Entry(zwindow, relief=RAISED, bd=5)
     obs_num=tk.Entry(zwindow, relief=RAISED, bd=5)
+    x_barnum.insert(0,"Enter the sample mean")
+    mu_num.insert(0,"Enter the population mean")
+    pop_standard_num.insert(0,"Enter the population sigma")
+    obs_num.insert(0,"Enter the # of observations")
     # Button to generate Z score
-    Zbtn=tk.Button(zwindow, text="Calculate Z", command=findzscore, highlightbackground="blue")
+    Zbtn=tk.Button(zwindow, text="Calculate Z (Click Here)", command=findzscore, highlightbackground="#cfe2f3")
     # Display Box
-    display=tk.Entry(zwindow, highlightbackground="blue")
+    display=tk.Entry(zwindow, width=30)
+    display.insert(0,"The Z score will appear here!")
     #Locations
-    welcomelabel.grid(row=0,columnspan=2)
-    x_barLabel.grid(row=1, column=0)
-    x_barnum.grid(row=1, column=1)
-    mu_Label.grid(row=2, column=0)
-    mu_num.grid(row=2, column=1)
-    pop_standard_label.grid(row=3, column=0)
-    pop_standard_num.grid(row=3, column=1)
-    obs_Label.grid(row=4, column=0)
-    obs_num.grid(row=4, column=1)
-    Zbtn.grid(row=5, column=1)
-    display_Label.grid(row=6, column=0)
-    display.grid(row=6, column=1)
+    welcomelabel.grid(row=0)
+    x_barnum.grid(row=1)
+    mu_num.grid(row=2)
+    pop_standard_num.grid(row=3)
+    obs_num.grid(row=4)
+    Zbtn.grid(row=5)
+    display.grid(row=6)
 ##########################################
 
 ####### Z scores (solve for X) ##########
@@ -544,37 +555,36 @@ def findxvaluefromz():
         z_score = float(Zscorenum.get())
         mu = float(mu_num.get())
         standard = float(pop_standard_num.get())
-        x_value = (mu + standard*z_score)
+        # round to four decimal places
+        x_value = round((mu + standard*z_score),4)
+        # clear display box with each click
+        display.delete(0, END)
         display.insert(0, x_value)
     # open window for calculating X for a particular Z, pop mean, and pop standard deviation
     window=tk.Toplevel()
     window.title("Find X Given Z, mu, sigma")
-    window.geometry("800x500")
+    window.geometry("400x400")
     window['bg']="#cfe2f3"
-    # Labels for user input
+    # Labels for welcome label
     welcomelabel=tk.Label(window, text="Welcome to the X finder!", pady=10, padx=30, relief=RAISED, borderwidth=15, bg='#fff2cc')
-    ZscoreLabel=tk.Label(window, text="Enter the Z Score:", pady=10, padx=30, relief=RAISED, borderwidth=15)
-    mu_Label=tk.Label(window, text="Enter the mean of the population mean (mu):", pady=10, padx=30, relief=RAISED, borderwidth=15)
-    pop_standard_label=tk.Label(window, text="Enter the population standard deviation (sigma):", pady=10, padx=30, relief=RAISED, borderwidth=15)
-    display_Label=tk.Label(window, text="The value for X is:", pady=10, padx=30, relief=RAISED, borderwidth=15)
     # Entry boxes for user input
     Zscorenum=tk.Entry(window, relief=RAISED, bd=5)
     mu_num=tk.Entry(window, relief=RAISED, bd=5)
     pop_standard_num=tk.Entry(window, relief=RAISED, bd=5)
+    Zscorenum.insert(0,"Enter the Z score")
+    mu_num.insert(0,"Enter the population mean")
+    pop_standard_num.insert(0,"Enter the population sigma")
     # Button to find X
-    Xbtn=tk.Button(window, text="Calculate X Value", command=findxvalue, highlightbackground="blue")
+    Xbtn=tk.Button(window, text="Calculate X Value (Click Here)", command=findxvalue, highlightbackground="#cfe2f3")
     # Display Box
-    display=tk.Entry(window, highlightbackground="blue")
+    display=tk.Entry(window, width=30)
+    display.insert(0,"The value for X will appear here!")
     #Locations
     welcomelabel.grid(row=0, columnspan=2) 
-    ZscoreLabel.grid(row=1, column=0)
     Zscorenum.grid(row=1, column=1)
-    mu_Label.grid(row=2, column=0)
     mu_num.grid(row=2, column=1)
-    pop_standard_label.grid(row=3, column=0)
     pop_standard_num.grid(row=3, column=1)
     Xbtn.grid(row=4, column=1)
-    display_Label.grid(row=5, column=0)
     display.grid(row=5, column=1)
 ##############################################
 
@@ -582,42 +592,28 @@ def findxvaluefromz():
 # options for main window
 statsapp=tk.Tk()
 statsapp.title("Statistics Application")
-statsapp.geometry("700x900")
+statsapp.geometry("500x450")
 statsapp['bg']= '#fff2cc'
 # buttons
-zbtn=tk.Button(statsapp, text="Z Score (click here)", command=zscorefun, pady=10, padx=30, relief=RAISED, borderwidth=15)
-findxbtn=tk.Button(statsapp, text="Find X Given Z (click here)", command=findxvaluefromz, pady=10, padx=30, relief=RAISED, borderwidth=15)
+zbtn=tk.Button(statsapp, text="Find Z Scores, sample mean (click here)", command=zscorefun, pady=10, padx=30, relief=RAISED, borderwidth=15)
+findxbtn=tk.Button(statsapp, text="Find X Given Z, mu, sigma (click here)", command=findxvaluefromz, pady=10, padx=30, relief=RAISED, borderwidth=15)
 simp_line_btn=tk.Button(statsapp, text="Simple Linear Regression (click here)", command=simple_linear, pady=10, padx=30, relief=RAISED, borderwidth=15)
 multiple_2iv_btn=tk.Button(statsapp, text="Multiple Linear Regression 2 IV (click here)", command=multiple_regression2, pady=10, padx=30, relief=RAISED, borderwidth=15)
 multiple_3iv_btn=tk.Button(statsapp, text="Multiple Linear Regression 3 IV (click here)", command=multiple_regression3, pady=10, padx=30, relief=RAISED, borderwidth=15)
 multiple_4iv_btn=tk.Button(statsapp, text="Multiple Linear Regression 4 IV (click here)", command=multiple_regression4, pady=10, padx=30, relief=RAISED, borderwidth=15)
 multiple_5iv_btn=tk.Button(statsapp, text="Multiple Linear Regression 5 IV (click here)", command=multiple_regression5, pady=10, padx=30, relief=RAISED, borderwidth=15)
 
-# labels
+# Labels for welcome label
 welcome=tk.Label(statsapp, text="Welcome to the StatsApp: Select your calculation!", bg="#cfe2f3", pady=10, padx=30, relief=RAISED, borderwidth=15)
-zlabel=tk.Label(statsapp, text="Find Z | x_bar, mu, sigma ------>", bg="#bacbda", pady=10, padx=30, relief=RAISED, borderwidth=15)
-x_fromz_label=tk.Label(statsapp, text="Find X | z, mu, sigma ---------->", bg="#90dbf4", pady=10, padx=30, relief=RAISED, borderwidth=15)
-simp_line_label=tk.Label(statsapp, text="Simple Linear Regression ------>", bg='#cfbaf0', borderwidth=15, pady=10, padx=30, relief=RAISED)
-multiple_2iv_label=tk.Label(statsapp, text="Multiple Linear Regression 2 IV -->", bg='#f4cccc', borderwidth=15, pady=10, padx=30, relief=RAISED)
-multiple_3iv_label=tk.Label(statsapp, text="Multiple Linear Regression 3 IV -->", bg='#bacbda', borderwidth=15, pady=10, padx=30, relief=RAISED)
-multiple_4iv_label=tk.Label(statsapp, text="Multiple Linear Regression 4 IV -->", bg='#90dbf4', borderwidth=15, pady=10, padx=30, relief=RAISED)
-multiple_5iv_label=tk.Label(statsapp, text="Multiple Linear Regression 5 IV -->", bg='#cfbaf0', borderwidth=15, pady=10, padx=30, relief=RAISED)
 
 # place labels and buttons in main window
-welcome.grid(row=0, columnspan=2)
-zlabel.grid(row=1,column=0)
-zbtn.grid(row=1,column=1)
-x_fromz_label.grid(row=2,column=0)
-findxbtn.grid(row=2,column=1)
-simp_line_label.grid(row=3, column=0)
-simp_line_btn.grid(row=3, column=1)
-multiple_2iv_label.grid(row=4,column=0)
-multiple_2iv_btn.grid(row=4,column=1)
-multiple_3iv_label.grid(row=5,column=0)
-multiple_3iv_btn.grid(row=5,column=1)
-multiple_4iv_label.grid(row=6,column=0)
-multiple_4iv_btn.grid(row=6,column=1)
-multiple_5iv_label.grid(row=7,column=0)
-multiple_5iv_btn.grid(row=7,column=1)
+welcome.grid(row=0)
+zbtn.grid(row=1)
+findxbtn.grid(row=2)
+simp_line_btn.grid(row=3)
+multiple_2iv_btn.grid(row=4)
+multiple_3iv_btn.grid(row=5)
+multiple_4iv_btn.grid(row=6)
+multiple_5iv_btn.grid(row=7)
 # run program
 statsapp.mainloop()
