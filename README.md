@@ -1,5 +1,5 @@
 # tk_project
-Tkinter Basic Statistics Project
+Tkinter Statistics Project
 
 This application performs multiple statistical calculations within a tkinter grahpical user environment. Hopefully, it generates student interest in programming and statistics!
 
