@@ -1,5 +1,4 @@
 """
-
 Statistics Application with tkinter graphical user interface
 Find Z scores, X values for given Z scores, simple, and multiple regression estimation
 
@@ -88,20 +87,18 @@ def multiple_regression2():
         y = y.astype(np.float64)
         y = y[...,None]
         return y
-
     # function calls userinput function, transforms concatenated arrays into np.matrix
     def xmatrix():
         xmatrix = userinputx()
         xmatrix = np.matrix(xmatrix)
         return xmatrix
-
     # function calls userinput function, transforms concatenated arrays into np.matrix
     def ymatrix():
         ymatrix = userinputy()
         ymatrix = np.matrix(ymatrix)
         return ymatrix
-
-    # main function calls x and y matrix functions, calculates the transpose of X matrix for linear algebra derrivation of predicted beta values
+    # main function calls x and y matrix functions, calculates the transpose of X matrix for linear algebra derrivation of 
+    # predicted beta values
     def multiple_reg():
         X = xmatrix()
         Y = ymatrix()
@@ -124,14 +121,11 @@ def multiple_regression2():
         # clear display text box with each click and then display results
         display.delete(0,END)
         display.insert(0, "Y = {}+ {}X_1 + {}X_2".format(beta_zero,beta_one,beta_two))
-
-
     # main window information
     mlwindow=tk.Toplevel()
     mlwindow.title("Multiple Linear Regression")
     mlwindow.geometry("800x400")
     mlwindow['bg']= "#cfe2f3"
-
     # Labels for user input
     welcome_label=tk.Label(mlwindow, text="Welcome to the Multiple Linear Relationship estimator: Input the values for X and Y (separate with comma)", pady=10, padx=30, relief=RAISED, borderwidth=10, bg='#fff2cc')
     # Entry boxes for user input
@@ -145,7 +139,6 @@ def multiple_regression2():
     x_varnum.insert(0, "Enter values for X_1")
     x2_varnum.insert(0, "Enter values for X_2")
     y_varnum.insert(0, "Enter values for Y")
-
     # Button to regression coefficients
     simplebtn=tk.Button(mlwindow, text="Estimate the regression equation (Click Here)", command=multiple_reg, borderwidth=5)
     # Display box
@@ -185,19 +178,16 @@ def multiple_regression3():
         y = y.astype(np.float64)
         y = y[...,None]
         return y
-
     # function calls userinput function, transforms concatenated arrays into np.matrix
     def xmatrix():
         xmatrix = userinputx()
         xmatrix = np.matrix(xmatrix)
         return xmatrix
-
     # function calls userinput function, transforms concatenated arrays into np.matrix
     def ymatrix():
         ymatrix = userinputy()
         ymatrix = np.matrix(ymatrix)
         return ymatrix
-
     # main function calls x and y matrix functions, calculates the transpose of X matrix for linear algebra derrivation of predicted beta values
     def multiple_reg():
         X = xmatrix()
@@ -223,13 +213,11 @@ def multiple_regression3():
         # clear display text box with each click and then display results
         display.delete(0,END)
         display.insert(0, "Y = {}+ {}X_1 + {}X_2 + {}X_3".format(beta_zero,beta_one,beta_two,beta_three))
-
     # main window information
     mlwindow=tk.Toplevel()
     mlwindow.title("Multiple Linear Regression")
     mlwindow.geometry("800x400")
     mlwindow['bg']= "#cfe2f3"
-
     # Labels for user input
     welcome_label=tk.Label(mlwindow, text="Welcome to the Multiple Linear Relationship estimator: Input the values for X and Y (separate a comma)", pady=10, padx=30, relief=RAISED, borderwidth=15, bg='#fff2cc')
     # Entry boxes for user input
@@ -262,7 +250,6 @@ def multiple_regression3():
     display.grid(row=9)
 ##########################################
 ##########################################
-
 ######## Multiple Linear Regression (4 independent variables)
 # Estimating regression model using numpy linear algebra
 def multiple_regression4():
@@ -292,20 +279,16 @@ def multiple_regression4():
         y = y.astype(np.float64)
         y = y[...,None]
         return y
-        #y_float = y_array.astype(np.float64)
-
     # function calls userinput function, transforms concatenated arrays into np.matrix
     def xmatrix():
         xmatrix = userinputx()
         xmatrix = np.matrix(xmatrix)
         return xmatrix
-
     # function calls userinput function, transforms concatenated arrays into np.matrix
     def ymatrix():
         ymatrix = userinputy()
         ymatrix = np.matrix(ymatrix)
         return ymatrix
-
     # main function calls x and y matrix functions, calculates the transpose of X matrix for linear algebra derrivation of predicted beta values
     def multiple_reg():
         X = xmatrix()
@@ -334,13 +317,11 @@ def multiple_regression4():
         # clear display text box with each click and then display results
         display.delete(0,END)
         display.insert(0, "Y = {}+ {}X_1 + {}X_2 + {}X_3 + {}X_4".format(beta_zero,beta_one,beta_two,beta_three,beta_four))
-
     # main window information
     mlwindow=tk.Toplevel()
     mlwindow.title("Multiple Linear Regression")
     mlwindow.geometry("800x400")
     mlwindow['bg']= "#cfe2f3"
-
     # Labels for welcome label
     welcome_label=tk.Label(mlwindow, text="Welcome to the Multiple Linear Relationship estimator: Input the values for X and Y (separate with a comma)", pady=10, padx=30, relief=RAISED, borderwidth=15, bg='#fff2cc')
     # Entry boxes for user input
@@ -361,8 +342,7 @@ def multiple_regression4():
     x3_varnum.insert(0,"Enter the values for X3")
     x4_varnum.insert(0,"Enter the values for X4")
     y_varnum.insert(0,"Enter the values for Y")
-
-    # Button to generate Z score
+    # Button to estimate regression equation
     simplebtn=tk.Button(mlwindow, text="Estimate Regression Equation (Click Here)", command=multiple_reg, relief=RAISED, borderwidth=5)
     # Display box
     display=tk.Entry(mlwindow, relief=RAISED, bd=5, borderwidth=10, highlightbackground="#cfe2f3", width=70)
@@ -378,7 +358,6 @@ def multiple_regression4():
     display.grid(row=9)
 ##########################################
 ##########################################
-
 ######## Multiple Linear Regression (5 independent variables)
 # Estimating regression model using numpy linear algebra
 def multiple_regression5():
@@ -413,19 +392,16 @@ def multiple_regression5():
         y = y[...,None]
         return y
         #y_float = y_array.astype(np.float64)
-
     # function calls userinput function, transforms concatenated arrays into np.matrix
     def xmatrix():
         xmatrix = userinputx()
         xmatrix = np.matrix(xmatrix)
         return xmatrix
-
     # function calls userinput function, transforms concatenated arrays into np.matrix
     def ymatrix():
         ymatrix = userinputy()
         ymatrix = np.matrix(ymatrix)
         return ymatrix
-
     # main function calls x and y matrix functions, calculates the transpose of X matrix for linear algebra derrivation of predicted beta values
     def multiple_reg():
         X = xmatrix()
@@ -457,14 +433,11 @@ def multiple_regression5():
         # clear display text box with each click and then display results
         display.delete(0,END)
         display.insert(0, "Y = {}+ {}X_1 + {}X_2 + {}X_3 + {}X_4 + {}X_5".format(beta_zero,beta_one,beta_two,beta_three,beta_four,beta_five))
-
-
     # main window information
     mlwindow=tk.Toplevel()
     mlwindow.title("Multiple Linear Regression")
     mlwindow.geometry("800x400")
     mlwindow['bg']= "#cfe2f3"
-
     # Label for welcome
     welcome_label=tk.Label(mlwindow, text="Welcome to the Multiple Linear Relationship estimator: Input the values for X and Y (separate with spacebar)", pady=10, padx=30, relief=RAISED, borderwidth=15, bg='#fff2cc')
     # Entry boxes for user input
@@ -521,6 +494,7 @@ def zscorefun():
     ### open window for Z score calculation
     zwindow=tk.Toplevel()
     zwindow.geometry("300x300")
+    zwindow.title("Z Score")
     zwindow['bg']="#cfe2f3"    
     # Labels for welcome label
     welcomelabel=tk.Label(zwindow, text="Welcome to the Z score finder!", pady=10, padx=30, relief=RAISED, borderwidth=15, bg='#fff2cc')
@@ -591,17 +565,17 @@ def findxvaluefromz():
 # Main program tk window. Functions are launched from the main window.
 # options for main window
 statsapp=tk.Tk()
-statsapp.title("Statistics Application")
+statsapp.title("Statistics Program")
 statsapp.geometry("500x450")
 statsapp['bg']= '#fff2cc'
 # buttons
-zbtn=tk.Button(statsapp, text="Find Z Scores, sample mean (click here)", command=zscorefun, pady=10, padx=30, relief=RAISED, borderwidth=15)
-findxbtn=tk.Button(statsapp, text="Find X Given Z, mu, sigma (click here)", command=findxvaluefromz, pady=10, padx=30, relief=RAISED, borderwidth=15)
-simp_line_btn=tk.Button(statsapp, text="Simple Linear Regression (click here)", command=simple_linear, pady=10, padx=30, relief=RAISED, borderwidth=15)
-multiple_2iv_btn=tk.Button(statsapp, text="Multiple Linear Regression 2 IV (click here)", command=multiple_regression2, pady=10, padx=30, relief=RAISED, borderwidth=15)
-multiple_3iv_btn=tk.Button(statsapp, text="Multiple Linear Regression 3 IV (click here)", command=multiple_regression3, pady=10, padx=30, relief=RAISED, borderwidth=15)
-multiple_4iv_btn=tk.Button(statsapp, text="Multiple Linear Regression 4 IV (click here)", command=multiple_regression4, pady=10, padx=30, relief=RAISED, borderwidth=15)
-multiple_5iv_btn=tk.Button(statsapp, text="Multiple Linear Regression 5 IV (click here)", command=multiple_regression5, pady=10, padx=30, relief=RAISED, borderwidth=15)
+zbtn=tk.Button(statsapp, text="Find Z Scores, sample mean (click here)", command=zscorefun, pady=10, padx=30)
+findxbtn=tk.Button(statsapp, text="Find X Given Z, mu, sigma (click here)", command=findxvaluefromz, pady=10, padx=30)
+simp_line_btn=tk.Button(statsapp, text="Simple Linear Regression (click here)", command=simple_linear, pady=10, padx=30)
+multiple_2iv_btn=tk.Button(statsapp, text="Multiple Linear Regression 2 IV (click here)", command=multiple_regression2, pady=10, padx=30)
+multiple_3iv_btn=tk.Button(statsapp, text="Multiple Linear Regression 3 IV (click here)", command=multiple_regression3, pady=10, padx=30)
+multiple_4iv_btn=tk.Button(statsapp, text="Multiple Linear Regression 4 IV (click here)", command=multiple_regression4, pady=10, padx=30)
+multiple_5iv_btn=tk.Button(statsapp, text="Multiple Linear Regression 5 IV (click here)", command=multiple_regression5, pady=10, padx=30)
 
 # Labels for welcome label
 welcome=tk.Label(statsapp, text="Welcome to the StatsApp: Select your calculation!", bg="#cfe2f3", pady=10, padx=30, relief=RAISED, borderwidth=15)
