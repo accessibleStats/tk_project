@@ -7,12 +7,9 @@ Jack Nickelson
 
 from tkinter import *
 import tkinter as tk
-from tkinter.font import families
 import numpy as np
 from numpy import sqrt
 import statistics as statistics
-
-from numpy.core.fromnumeric import size
 
 
 ######## Univariate Descriptie Statistics #########
