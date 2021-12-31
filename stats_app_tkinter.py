@@ -1,6 +1,6 @@
 """
 Statistics Application with tkinter graphical user interface
-Find Z scores, X values for given Z scores, simple, and multiple regression estimation
+Find univariate statistics, Z scores, X values for given Z scores, simple, and multiple regression estimation
 
 Jack Nickelson
 """
@@ -8,7 +8,101 @@ Jack Nickelson
 from tkinter import *
 import tkinter as tk
 import numpy as np
-from numpy import sqrt
+
+import statistics as statistics
+
+
+######## Univariate Descriptie Statistics #########
+ ## create a class with univariate descriptive stat attributes
+class Univariate:
+    """class for univariate exploration"""
+    def __init__(self, userdata):
+        self.userdata = []
+        self.mean = int(sum(int(x) for x in userdata))/len(userdata)
+        self.sort = sorted(userdata)
+        self.length = len(userdata)
+        self.midpoint = (self.length -1) // 2 
+        if (self.length % 2): 
+            self.median = (self.sort[self.midpoint]) 
+        else: 
+            self.median = (self.sort[self.midpoint] + self.sort[self.midpoint +1])/2 
+        self.mode = statistics.multimode(userdata)
+        self.var = statistics.variance(userdata)
+        self.std = statistics.stdev(userdata)
+        self.first_quantile_in = np.quantile(userdata, .25)
+        self.third_quantile_in = np.quantile(userdata, .75)
+        self.iqr_in = self.third_quantile_in - self.first_quantile_in
+        self.upper = self.third_quantile_in + (self.iqr_in * 1.5)
+        self.lower = self.first_quantile_in - (self.iqr_in * 1.5)
+        self.outliers = "The outliers are below {} or above {}.".format(self.lower,self.upper)
+###### function to generate secondary window from primary program window
+def univarstats():
+    def calculate_stats():
+        x_var = [int(x) for x in x_values.get().split(',')]
+        x_var = Univariate(x_var)
+        # clear entry boxes of text with each click
+        meanvalue.delete(0,END)
+        medianvalue.delete(0,END)
+        modevalue.delete(0,END)
+        variancevalue.delete(0,END)
+        standarddev.delete(0,END)
+        quartilevalues_in.delete(0,END)
+        iqr_in.delete(0,END)
+        outliers.delete(0,END)
+        # insert values into entry boxes
+        meanvalue.insert(0,"Mean = {}".format(x_var.mean))
+        medianvalue.insert(0, "Median = {}".format(x_var.median))
+        modevalue.insert(0, "Mode = {}".format(x_var.mode))
+        variancevalue.insert(0, "Variance = {}".format(x_var.var))
+        standarddev.insert(0, "Standard Deviation = {}".format(x_var.std))
+        quartilevalues_in.insert(0, "Inclusive Quartiles: Q1 = {}, Q2 = {}, Q3 = {}".format(x_var.first_quantile_in, x_var.median, x_var.third_quantile_in))
+        iqr_in.insert(0, "Inclusive IQR = {}".format(x_var.iqr_in))
+        outliers.insert(0, "{}".format(x_var.outliers))
+    
+    # main window information
+    main_win = tk.Toplevel()
+    main_win.title("Univariate Descriptive Statistics")
+    main_win.geometry("450x425")
+    main_win['bg']= '#7b9cd1'
+    # Welcome label
+    welcome_label = tk.Label(main_win, text="Welcome to the univariate descriptive statistics generator!", pady=10, padx=30, relief=RAISED, borderwidth=15, bg='#fee3b5')
+    # execution button
+    calc_button=tk.Button(main_win, text="Calculate Univariate Statistics (Click Here)", command=calculate_stats)
+
+    # entry box for user input
+    x_values=StringVar()
+    x_values = tk.Entry(main_win, width=45)
+    meanvalue= tk.Entry(main_win, width=45)
+    medianvalue= tk.Entry(main_win, width=45)
+    modevalue= tk.Entry(main_win, width=45)
+    variancevalue= tk.Entry(main_win, width=45)
+    standarddev= tk.Entry(main_win, width=45)
+    quartilevalues_in= tk.Entry(main_win, width=45)
+    iqr_in= tk.Entry(main_win, width=45)
+    outliers= tk.Entry(main_win, width=45)
+    x_values.insert(0,"Enter values for descriptive stats (separate with a comma)")
+    meanvalue.insert(0,"The mean will appear here!")
+    medianvalue.insert(0,"The median value will appear here!")
+    modevalue.insert(0,"The mode will appear here!")
+    variancevalue.insert(0,"The variance will appear here!")
+    standarddev.insert(0,"The standard deviation will appear here!")
+    quartilevalues_in.insert(0,"The inclusive quartiles will appear here!")
+    iqr_in.insert(0,"The inclusive IQR will appear here!")
+    outliers.insert(0,"The outlier information using IQR*1.5 will appear here!")
+    # placement
+    welcome_label.grid(row=0)
+    x_values.grid(row=1)
+    calc_button.grid(row=2)
+    meanvalue.grid(row=3)
+    medianvalue.grid(row=4)
+    modevalue.grid(row=5)
+    variancevalue.grid(row=6)
+    standarddev.grid(row=7)
+    quartilevalues_in.grid(row=8)
+    iqr_in.grid(row=9)
+    outliers.grid(row=10)
+
+
 
 ####### Simple linear regression ##########
 def simple_linear():
@@ -576,18 +670,19 @@ multiple_2iv_btn=tk.Button(statsapp, text="Multiple Linear Regression 2 IV (clic
 multiple_3iv_btn=tk.Button(statsapp, text="Multiple Linear Regression 3 IV (click here)", command=multiple_regression3, pady=10, padx=30)
 multiple_4iv_btn=tk.Button(statsapp, text="Multiple Linear Regression 4 IV (click here)", command=multiple_regression4, pady=10, padx=30)
 multiple_5iv_btn=tk.Button(statsapp, text="Multiple Linear Regression 5 IV (click here)", command=multiple_regression5, pady=10, padx=30)
-
+univarbtn=tk.Button(statsapp, text="Find Univariate Statistics (click here)", command=univarstats, pady=10, padx=30)
 # Labels for welcome label
 welcome=tk.Label(statsapp, text="Welcome to the StatsApp: Select your calculation!", bg="#cfe2f3", pady=10, padx=30, relief=RAISED, borderwidth=15)
 
 # place labels and buttons in main window
 welcome.grid(row=0)
-zbtn.grid(row=1)
-findxbtn.grid(row=2)
-simp_line_btn.grid(row=3)
-multiple_2iv_btn.grid(row=4)
-multiple_3iv_btn.grid(row=5)
-multiple_4iv_btn.grid(row=6)
-multiple_5iv_btn.grid(row=7)
+univarbtn.grid(row=1)
+zbtn.grid(row=3)
+findxbtn.grid(row=4)
+simp_line_btn.grid(row=5)
+multiple_2iv_btn.grid(row=6)
+multiple_3iv_btn.grid(row=7)
+multiple_4iv_btn.grid(row=8)
+multiple_5iv_btn.grid(row=9)
 # run program
 statsapp.mainloop()
