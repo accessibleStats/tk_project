@@ -1,25 +1,21 @@
 """
-Statistics program with tkinter graphical user interface
-Find univariate statistics, Z scores, X values for given Z scores, 
-correlation r, simple regression equation estimation, multiple regression 
-equation estimation, statistics using a binomial and Poisson distribution.
-
-Jack Nickelson
+Statistics Calculations with tkinter gui
+Generate univariate statistics, Z scores using Guassian distribution, X values for given Z scores, 
+find correlations, simple regression estimation, multiple regression estimation, 
+probabilities using a binomial and Poisson distribution.
 """
 
-from tkinter import *
 import tkinter as tk
 import numpy as np
 from numpy import sqrt
-import statistics as statistics
+from statistics import multimode, variance, stdev
 
 
 ######## Univariate Descriptie Statistics #########
  ## create a class with univariate descriptive stat attributes
 class Univariate:
-    """class for univariate exploration"""
+    #class for univariate exploration
     def __init__(self, userdata):
-        self.userdata = []
         self.mean = int(sum(int(x) for x in userdata))/len(userdata)
         self.sort = sorted(userdata)
         self.length = len(userdata)
@@ -28,15 +24,16 @@ class Univariate:
             self.median = (self.sort[self.midpoint]) 
         else: 
             self.median = (self.sort[self.midpoint] + self.sort[self.midpoint +1])/2 
-        self.mode = statistics.multimode(userdata)
-        self.var = statistics.variance(userdata)
-        self.std = statistics.stdev(userdata)
+        self.mode = multimode(userdata)
+        self.var = variance(userdata)
+        self.std = stdev(userdata)
         self.first_quantile_in = np.quantile(userdata, .25)
         self.third_quantile_in = np.quantile(userdata, .75)
         self.iqr_in = self.third_quantile_in - self.first_quantile_in
         self.upper = self.third_quantile_in + (self.iqr_in * 1.5)
         self.lower = self.first_quantile_in - (self.iqr_in * 1.5)
         self.outliers = "The outliers are below {} or above {}.".format(self.lower,self.upper)
+
 ###### function to generate secondary window from primary program window
 def univarstats():
     # grab user input from entry window and assign to Univariate class
@@ -44,14 +41,14 @@ def univarstats():
         x_var = [int(x) for x in x_values.get().split(',')]
         x_var = Univariate(x_var)
         # clear entry boxes of text with each click
-        meanvalue.delete(0,END)
-        medianvalue.delete(0,END)
-        modevalue.delete(0,END)
-        variancevalue.delete(0,END)
-        standarddev.delete(0,END)
-        quartilevalues_in.delete(0,END)
-        iqr_in.delete(0,END)
-        outliers.delete(0,END)
+        meanvalue.delete(0,tk.END)
+        medianvalue.delete(0,tk.END)
+        modevalue.delete(0,tk.END)
+        variancevalue.delete(0,tk.END)
+        standarddev.delete(0,tk.END)
+        quartilevalues_in.delete(0,tk.END)
+        iqr_in.delete(0,tk.END)
+        outliers.delete(0,tk.END)
         # insert values into entry boxes
         meanvalue.insert(0,"Mean = {}".format(x_var.mean))
         medianvalue.insert(0, "Median = {}".format(x_var.median))
@@ -61,18 +58,19 @@ def univarstats():
         quartilevalues_in.insert(0, "Inclusive Quartiles: Q1 = {}, Q2 = {}, Q3 = {}".format(x_var.first_quantile_in, x_var.median, x_var.third_quantile_in))
         iqr_in.insert(0, "Inclusive IQR = {}".format(x_var.iqr_in))
         outliers.insert(0, "{}".format(x_var.outliers))
+
     # main window information
     main_win = tk.Toplevel()
     main_win.title("Univariate Descriptive Statistics")
     main_win.geometry("550x650")
     main_win['bg']= '#7b9cd1'
     # Welcome label
-    welcome_label = tk.Label(main_win, text="Univariate Descriptive Statistics!", pady=10, padx=30, relief=RAISED, borderwidth=15, bg='#fee3b5', font=('Helvetica',22))
+    welcome_label = tk.Label(main_win, text="Univariate Descriptive Statistics!", pady=10, padx=30, relief=tk.RAISED, borderwidth=15, bg='#fee3b5', font=('Helvetica',22))
     # execution button
     calc_button=tk.Button(main_win, text="Calculate Univariate Statistics (Click Here)", command=calculate_stats, font=('Helvetica',17))
     # entry box for user input.
     # create entry boxes
-    x_values=StringVar()
+    x_values=tk.StringVar()
     x_values = tk.Entry(main_win, width=45, font=('Helvetica',17))
     meanvalue= tk.Entry(main_win, width=45, font=('Helvetica',17))
     medianvalue= tk.Entry(main_win, width=45, font=('Helvetica',17))
@@ -124,9 +122,9 @@ def simple_linear():
         correlationcoefficient = round(sumxyproducts / np.sqrt(ssx*ssy),4)
         r_squared=round(correlationcoefficient**2,4)
         # clear display text box with each click and then display results
-        display_reg_eq.delete(0,END)
-        display_r.delete(0,END)
-        display_r_sq.delete(0,END)
+        display_reg_eq.delete(0,tk.END)
+        display_r.delete(0,tk.END)
+        display_r_sq.delete(0,tk.END)
         display_reg_eq.insert(0, "Y = {} + {}X".format(beta0, beta1))
         display_r.insert(0, "Correlation r = {}".format(correlationcoefficient))
         display_r_sq.insert(0, "R Squared = {}".format(r_squared))
@@ -135,7 +133,7 @@ def simple_linear():
     slwindow.geometry("600x500")
     slwindow['bg']= "#7b9cd1"
     # Labels for user input
-    welcome_label=tk.Label(slwindow, text="Input X and Y (separate values with , )", pady=10, padx=30, relief=RAISED, borderwidth=10, bg='#fee3b5', font=('Helvetica',22))
+    welcome_label=tk.Label(slwindow, text="Input X and Y (separate values with , )", pady=10, padx=30, relief=tk.tk.RAISED, borderwidth=10, bg='#fee3b5', font=('Helvetica',22))
     # Entry boxes for user input
     x_varnum=tk.Entry(slwindow, bd=5, width=30, font=('Helvetica',17))
     y_varnum=tk.Entry(slwindow, bd=5, width=30, font=('Helvetica',17))
@@ -213,7 +211,7 @@ def multiple_regression2():
         beta_two=np.float64(beta_two)
         beta_two=round(beta_two,4)
         # clear display text box with each click and then display results
-        display.delete(0,END)
+        display.delete(0,tk.END)
         display.insert(0, "Y = {}+ {}X_1 + {}X_2".format(beta_zero,beta_one,beta_two))
     # main window information
     mlwindow=tk.Toplevel()
@@ -221,22 +219,22 @@ def multiple_regression2():
     mlwindow.geometry("600x400")
     mlwindow['bg']= "#7b9cd1"
     # Labels for user input
-    welcome_label=tk.Label(mlwindow, text="Input values for X and Y (separate with , )", pady=10, padx=30, relief=RAISED, borderwidth=10, bg='#fee3b5', font=('Helvetica',22))
+    welcome_label=tk.Label(mlwindow, text="Input values for X and Y (separate with , )", pady=10, padx=30, relief=tk.RAISED, borderwidth=10, bg='#fee3b5', font=('Helvetica',22))
     # Entry boxes for user input
-    x_varnum=StringVar()
-    x2_varnum=StringVar()
-    y_varnum=StringVar()
+    x_varnum=tk.StringVar()
+    x2_varnum=tk.StringVar()
+    y_varnum=tk.StringVar()
     # Entry boxes for user input
-    x_varnum=tk.Entry(mlwindow, textvariable=x_varnum, relief=RAISED, bd=5, borderwidth=5, font=('Helvetica',17))
-    x2_varnum=tk.Entry(mlwindow, textvariable=x2_varnum, relief=RAISED, bd=5, borderwidth=5, font=('Helvetica',17))
-    y_varnum=tk.Entry(mlwindow, textvariable=y_varnum, relief=RAISED, bd=5, borderwidth=5, font=('Helvetica',17))
+    x_varnum=tk.Entry(mlwindow, textvariable=x_varnum, relief=tk.RAISED, bd=5, borderwidth=5, font=('Helvetica',17))
+    x2_varnum=tk.Entry(mlwindow, textvariable=x2_varnum, relief=tk.RAISED, bd=5, borderwidth=5, font=('Helvetica',17))
+    y_varnum=tk.Entry(mlwindow, textvariable=y_varnum, relief=tk.RAISED, bd=5, borderwidth=5, font=('Helvetica',17))
     x_varnum.insert(0, "Enter X_1 values")
     x2_varnum.insert(0, "Enter X_2 values")
     y_varnum.insert(0, "Enter Y values")
     # Button to regression coefficients
     simplebtn=tk.Button(mlwindow, text="Estimate the regression equation (Click Here)", command=multiple_reg, borderwidth=5, font=('Helvetica',17))
     # Display box
-    display=tk.Entry(mlwindow, relief=RAISED, bd=5, borderwidth=5, highlightbackground="#cfe2f3", width=50, font=('Helvetica',17))
+    display=tk.Entry(mlwindow, relief=tk.RAISED, bd=5, borderwidth=5, highlightbackground="#cfe2f3", width=50, font=('Helvetica',17))
     display.insert(0,"The estimated regression equation will appear here!")
     # Locations
     welcome_label.grid(row=0, pady=10, padx=50)
@@ -305,7 +303,7 @@ def multiple_regression3():
         beta_three=np.float64(beta_three)
         beta_three=round(beta_three,4)
         # clear display text box with each click and then display results
-        display.delete(0,END)
+        display.delete(0,tk.END)
         display.insert(0, "Y = {}+ {}X_1 + {}X_2 + {}X_3".format(beta_zero,beta_one,beta_two,beta_three))
     # main window information
     mlwindow=tk.Toplevel()
@@ -313,17 +311,17 @@ def multiple_regression3():
     mlwindow.geometry("800x600")
     mlwindow['bg']= "#7b9cd1"
     # Labels for user input
-    welcome_label=tk.Label(mlwindow, text="Input values for X and Y (separate with , )", pady=10, padx=30, relief=RAISED, borderwidth=15, bg='#fee3b5', font=('Helvetica',22))
+    welcome_label=tk.Label(mlwindow, text="Input values for X and Y (separate with , )", pady=10, padx=30, relief=tk.RAISED, borderwidth=15, bg='#fee3b5', font=('Helvetica',22))
     # Entry boxes for user input
-    x_varnum=StringVar()
-    x2_varnum=StringVar()
-    x3_varnum=StringVar()
-    y_varnum=StringVar()
+    x_varnum=tk.StringVar()
+    x2_varnum=tk.StringVar()
+    x3_varnum=tk.StringVar()
+    y_varnum=tk.StringVar()
     # Entry boxes for user input
-    x_varnum=tk.Entry(mlwindow, textvariable=x_varnum, relief=RAISED, bd=5, borderwidth=5, font=('Helvetica',17))
-    x2_varnum=tk.Entry(mlwindow, textvariable=x2_varnum, relief=RAISED, bd=5, borderwidth=5, font=('Helvetica',17))
-    x3_varnum=tk.Entry(mlwindow, textvariable=x3_varnum, relief=RAISED, bd=5, borderwidth=5, font=('Helvetica',17))
-    y_varnum=tk.Entry(mlwindow, textvariable=y_varnum, relief=RAISED, bd=5, borderwidth=5, font=('Helvetica',17))
+    x_varnum=tk.Entry(mlwindow, textvariable=x_varnum, relief=tk.RAISED, bd=5, borderwidth=5, font=('Helvetica',17))
+    x2_varnum=tk.Entry(mlwindow, textvariable=x2_varnum, relief=tk.RAISED, bd=5, borderwidth=5, font=('Helvetica',17))
+    x3_varnum=tk.Entry(mlwindow, textvariable=x3_varnum, relief=tk.RAISED, bd=5, borderwidth=5, font=('Helvetica',17))
+    y_varnum=tk.Entry(mlwindow, textvariable=y_varnum, relief=tk.RAISED, bd=5, borderwidth=5, font=('Helvetica',17))
     # text inside of entry boxes
     x_varnum.insert(0,"Enter the values for X1")
     x2_varnum.insert(0,"Enter the values for X2")
@@ -332,7 +330,7 @@ def multiple_regression3():
     # Button to estimate regression equation
     simplebtn=tk.Button(mlwindow, text="Estimate Regression Equation (Click Here)", command=multiple_reg, borderwidth=5, font=('Helvetica',17))
     # Display box
-    display=tk.Entry(mlwindow, relief=RAISED, bd=5, borderwidth=5, highlightbackground="#cfe2f3", width=70, font=('Helvetica',17))
+    display=tk.Entry(mlwindow, relief=tk.RAISED, bd=5, borderwidth=5, highlightbackground="#cfe2f3", width=70, font=('Helvetica',17))
     display.insert(0,"The estimated regression equation will appear here!")
     # Locations
     welcome_label.grid(row=0, pady=10, padx=50)
@@ -409,7 +407,7 @@ def multiple_regression4():
         beta_four=np.float64(beta_four)
         beta_four=round(beta_four,4)
         # clear display text box with each click and then display results
-        display.delete(0,END)
+        display.delete(0,tk.END)
         display.insert(0, "Y = {}+ {}X_1 + {}X_2 + {}X_3 + {}X_4".format(beta_zero,beta_one,beta_two,beta_three,beta_four))
     # main window information
     mlwindow=tk.Toplevel()
@@ -417,19 +415,19 @@ def multiple_regression4():
     mlwindow.geometry("800x600")
     mlwindow['bg']= "#7b9cd1"
     # Labels for welcome label
-    welcome_label=tk.Label(mlwindow, text="Input values for X and Y (separate with , )", pady=10, padx=30, relief=RAISED, borderwidth=15, bg='#fff2cc', font=('Helvetica',22))
+    welcome_label=tk.Label(mlwindow, text="Input values for X and Y (separate with , )", pady=10, padx=30, relief=tk.RAISED, borderwidth=15, bg='#fff2cc', font=('Helvetica',22))
     # Entry boxes for user input
-    x_varnum=StringVar()
-    x2_varnum=StringVar()
-    x3_varnum=StringVar()
-    x4_varnum=StringVar()
-    y_varnum=StringVar()
+    x_varnum=tk.StringVar()
+    x2_varnum=tk.StringVar()
+    x3_varnum=tk.StringVar()
+    x4_varnum=tk.StringVar()
+    y_varnum=tk.StringVar()
     # Entry boxes for user input
-    x_varnum=tk.Entry(mlwindow, textvariable=x_varnum, relief=RAISED, bd=5, borderwidth=5, font=('Helvetica',17))
-    x2_varnum=tk.Entry(mlwindow, textvariable=x2_varnum, relief=RAISED, bd=5, borderwidth=5, font=('Helvetica',17))
-    x3_varnum=tk.Entry(mlwindow, textvariable=x3_varnum, relief=RAISED, bd=5, borderwidth=5, font=('Helvetica',17))
-    x4_varnum=tk.Entry(mlwindow, textvariable=x3_varnum, relief=RAISED, bd=5, borderwidth=5, font=('Helvetica',17))
-    y_varnum=tk.Entry(mlwindow, textvariable=y_varnum, relief=RAISED, bd=5, borderwidth=5, font=('Helvetica',17))
+    x_varnum=tk.Entry(mlwindow, textvariable=x_varnum, relief=tk.RAISED, bd=5, borderwidth=5, font=('Helvetica',17))
+    x2_varnum=tk.Entry(mlwindow, textvariable=x2_varnum, relief=tk.RAISED, bd=5, borderwidth=5, font=('Helvetica',17))
+    x3_varnum=tk.Entry(mlwindow, textvariable=x3_varnum, relief=tk.RAISED, bd=5, borderwidth=5, font=('Helvetica',17))
+    x4_varnum=tk.Entry(mlwindow, textvariable=x3_varnum, relief=tk.RAISED, bd=5, borderwidth=5, font=('Helvetica',17))
+    y_varnum=tk.Entry(mlwindow, textvariable=y_varnum, relief=tk.RAISED, bd=5, borderwidth=5, font=('Helvetica',17))
     # text inside of entry boxes
     x_varnum.insert(0,"Enter the values for X1")
     x2_varnum.insert(0,"Enter the values for X2")
@@ -437,9 +435,9 @@ def multiple_regression4():
     x4_varnum.insert(0,"Enter the values for X4")
     y_varnum.insert(0,"Enter the values for Y")
     # Button to estimate regression equation
-    simplebtn=tk.Button(mlwindow, text="Estimate Regression Equation (Click Here)", command=multiple_reg, relief=RAISED, borderwidth=5, font=('Helvetica',17))
+    simplebtn=tk.Button(mlwindow, text="Estimate Regression Equation (Click Here)", command=multiple_reg, relief=tk.RAISED, borderwidth=5, font=('Helvetica',17))
     # Display box
-    display=tk.Entry(mlwindow, relief=RAISED, bd=5, borderwidth=10, highlightbackground="#cfe2f3", width=70, font=('Helvetica',17))
+    display=tk.Entry(mlwindow, relief=tk.RAISED, bd=5, borderwidth=10, highlightbackground="#cfe2f3", width=70, font=('Helvetica',17))
     display.insert(0,"The estimated regression equation will appear here!")
     # Locations
     welcome_label.grid(row=0, pady=10, padx=50)
@@ -525,7 +523,7 @@ def multiple_regression5():
         beta_five=np.float64(beta_five)
         beta_five=round(beta_five,4)
         # clear display text box with each click and then display results
-        display.delete(0,END)
+        display.delete(0,tk.END)
         display.insert(0, "Y = {}+ {}X_1 + {}X_2 + {}X_3 + {}X_4 + {}X_5".format(beta_zero,beta_one,beta_two,beta_three,beta_four,beta_five))
     # main window information
     mlwindow=tk.Toplevel()
@@ -533,21 +531,21 @@ def multiple_regression5():
     mlwindow.geometry("800x600")
     mlwindow['bg']= "#7b9cd1"
     # Label for welcome
-    welcome_label=tk.Label(mlwindow, text="Input the values for X and Y (separate with spacebar)", pady=10, padx=30, relief=RAISED, borderwidth=15, bg='#fee3b5', font=('Helvetica',22))
+    welcome_label=tk.Label(mlwindow, text="Input the values for X and Y (separate with spacebar)", pady=10, padx=30, relief=tk.RAISED, borderwidth=15, bg='#fee3b5', font=('Helvetica',22))
     # Entry boxes for user input
-    x_varnum=StringVar()
-    x2_varnum=StringVar()
-    x3_varnum=StringVar()
-    x4_varnum=StringVar()
-    x5_varnum=StringVar()
-    y_varnum=StringVar()
+    x_varnum=tk.StringVar()
+    x2_varnum=tk.StringVar()
+    x3_varnum=tk.StringVar()
+    x4_varnum=tk.StringVar()
+    x5_varnum=tk.StringVar()
+    y_varnum=tk.StringVar()
     # Entry boxes for user input
-    x_varnum=tk.Entry(mlwindow, textvariable=x_varnum, relief=RAISED, bd=5, borderwidth=5, font=('Helvetica',17))
-    x2_varnum=tk.Entry(mlwindow, textvariable=x2_varnum, relief=RAISED, bd=5, borderwidth=5, font=('Helvetica',17))
-    x3_varnum=tk.Entry(mlwindow, textvariable=x3_varnum, relief=RAISED, bd=5, borderwidth=5, font=('Helvetica',17))
-    x4_varnum=tk.Entry(mlwindow, textvariable=x4_varnum, relief=RAISED, bd=5, borderwidth=5, font=('Helvetica',17))
-    x5_varnum=tk.Entry(mlwindow, textvariable=x5_varnum, relief=RAISED, bd=5, borderwidth=5, font=('Helvetica',17))
-    y_varnum=tk.Entry(mlwindow, textvariable=y_varnum, relief=RAISED, bd=5, borderwidth=5, font=('Helvetica',17))
+    x_varnum=tk.Entry(mlwindow, textvariable=x_varnum, relief=tk.RAISED, bd=5, borderwidth=5, font=('Helvetica',17))
+    x2_varnum=tk.Entry(mlwindow, textvariable=x2_varnum, relief=tk.RAISED, bd=5, borderwidth=5, font=('Helvetica',17))
+    x3_varnum=tk.Entry(mlwindow, textvariable=x3_varnum, relief=tk.RAISED, bd=5, borderwidth=5, font=('Helvetica',17))
+    x4_varnum=tk.Entry(mlwindow, textvariable=x4_varnum, relief=tk.RAISED, bd=5, borderwidth=5, font=('Helvetica',17))
+    x5_varnum=tk.Entry(mlwindow, textvariable=x5_varnum, relief=tk.RAISED, bd=5, borderwidth=5, font=('Helvetica',17))
+    y_varnum=tk.Entry(mlwindow, textvariable=y_varnum, relief=tk.RAISED, bd=5, borderwidth=5, font=('Helvetica',17))
     # text inside of entry boxes
     x_varnum.insert(0,"Enter values for X1")
     x2_varnum.insert(0,"Enter values for X2")
@@ -558,7 +556,7 @@ def multiple_regression5():
     # Button to regression coefficients
     simplebtn=tk.Button(mlwindow, text="Estimate Regression Equation (Click Here)", command=multiple_reg, borderwidth=5, highlightbackground="#cfe2f3", font=('Helvetica',17))
     # Display box
-    display=tk.Entry(mlwindow, relief=RAISED, bd=5, borderwidth=10, width=70, font=('Helvetica',17))
+    display=tk.Entry(mlwindow, relief=tk.RAISED, bd=5, borderwidth=10, width=70, font=('Helvetica',17))
     display.insert(0,"The estimated regression equation will appear here!")
     # Locations
     welcome_label.grid(row=0, pady=10, padx=50)
@@ -583,12 +581,12 @@ def zscorefun():
         # round z score
         z_score = round((x_bar - mu) / (standard/sqrt(obs)),4)
         # clear display box with each click
-        display.delete(0, END)
+        display.delete(0, tk.END)
         display.insert(0, "Z score = {}".format(z_score))
-        x_barnum.delete(0,END)
-        mu_num.delete(0,END)
-        pop_standard_num.delete(0,END)
-        obs_num.delete(0,END)
+        x_barnum.delete(0,tk.END)
+        mu_num.delete(0,tk.END)
+        pop_standard_num.delete(0,tk.END)
+        obs_num.delete(0,tk.END)
         x_barnum.insert(0,"Enter sample mean")
         mu_num.insert(0,"Enter population mean")
         pop_standard_num.insert(0,"Enter population sigma")
@@ -599,12 +597,12 @@ def zscorefun():
     zwindow.title("Z Score")
     zwindow['bg']="#7b9cd1"    
     # Labels for welcome label
-    welcomelabel=tk.Label(zwindow, text="Z Score (Sample Mean)", pady=10, padx=30, relief=RAISED, borderwidth=15, bg='#fee3b5', font=('Helvetica',22))
+    welcomelabel=tk.Label(zwindow, text="Z Score (Sample Mean)", pady=10, padx=30, relief=tk.RAISED, borderwidth=15, bg='#fee3b5', font=('Helvetica',22))
     # Entry boxes for user input
-    x_barnum=tk.Entry(zwindow, relief=RAISED, bd=5, font=('Helvetica',17))
-    mu_num=tk.Entry(zwindow, relief=RAISED, font=('Helvetica',17))
-    pop_standard_num=tk.Entry(zwindow, relief=RAISED, font=('Helvetica',17))
-    obs_num=tk.Entry(zwindow, relief=RAISED, font=('Helvetica',17))
+    x_barnum=tk.Entry(zwindow, relief=tk.RAISED, bd=5, font=('Helvetica',17))
+    mu_num=tk.Entry(zwindow, relief=tk.RAISED, font=('Helvetica',17))
+    pop_standard_num=tk.Entry(zwindow, relief=tk.RAISED, font=('Helvetica',17))
+    obs_num=tk.Entry(zwindow, relief=tk.RAISED, font=('Helvetica',17))
     x_barnum.insert(0,"Enter sample mean")
     mu_num.insert(0,"Enter population mean")
     pop_standard_num.insert(0,"Enter population sigma")
@@ -634,11 +632,11 @@ def findxvaluefromz():
         # round to four decimal places
         x_value = round((mu + standard*z_score),4)
         # clear display box with each click
-        display.delete(0, END)
+        display.delete(0, tk.END)
         display.insert(0, x_value)
-        Zscorenum.delete(0,END)
-        mu_num.delete(0,END)
-        pop_standard_num.delete(0,END)
+        Zscorenum.delete(0,tk.END)
+        mu_num.delete(0,tk.END)
+        pop_standard_num.delete(0,tk.END)
         # reinsert the text for next calculation
         Zscorenum.insert(0,"Enter Z score")
         mu_num.insert(0,"Enter population mean")
@@ -649,11 +647,11 @@ def findxvaluefromz():
     window.geometry("450x400")
     window['bg']="#7b9cd1"
     # Labels for welcome label
-    welcomelabel=tk.Label(window, text="X value for given Z score", pady=10, padx=30, relief=RAISED, borderwidth=15, bg='#fee3b5', font=('Helvetica',22))
+    welcomelabel=tk.Label(window, text="X value for given Z score", pady=10, padx=30, relief=tk.RAISED, borderwidth=15, bg='#fee3b5', font=('Helvetica',22))
     # Entry boxes for user input
-    Zscorenum=tk.Entry(window, relief=RAISED, bd=5, font=('Helvetica',17))
-    mu_num=tk.Entry(window, relief=RAISED, bd=5, font=('Helvetica',17))
-    pop_standard_num=tk.Entry(window, relief=RAISED, bd=5, font=('Helvetica',17))
+    Zscorenum=tk.Entry(window, relief=tk.RAISED, bd=5, font=('Helvetica',17))
+    mu_num=tk.Entry(window, relief=tk.RAISED, bd=5, font=('Helvetica',17))
+    pop_standard_num=tk.Entry(window, relief=tk.RAISED, bd=5, font=('Helvetica',17))
     Zscorenum.insert(0,"Enter Z score")
     mu_num.insert(0,"Enter population mean")
     pop_standard_num.insert(0,"Enter population sigma")
@@ -673,6 +671,7 @@ def findxvaluefromz():
 
 ########## Binomial Statistics #################
 def binomial_calc():
+   
     def fact(x):
         x = float(x)
         if x < 0:
@@ -681,6 +680,7 @@ def binomial_calc():
             return 1
         else:
             return x * fact(x-1)
+           
     # run the program, collect variable information
     def run_program():
         n = int(trials.get())
@@ -730,19 +730,19 @@ def binomial_calc():
         # print solutions in display box
         calculation = selection_1.get()
         if calculation == 'At least K successes':
-            results.delete(0, END) 
+            results.delete(0, tk.END) 
             results.insert(0, "In {} trials, the probability of at least {} win(s) is: {}".format(n, k, solution_at_least))
         elif calculation ==  'Exactly K successes':
-            results.delete(0, END)
+            results.delete(0, tk.END)
             results.insert(0, "In {} trials, the probability of exactly {} win(s) is: {}".format(n, k, solution_exact))
         elif calculation == 'At most K successes':
-            results.delete(0, END)
+            results.delete(0, tk.END)
             results.insert(0, "In {} trials, the probability of at most {} win(s) is: {}".format(n, k, solution_at_most))
         elif calculation == 'Less than K successes':
-            results.delete(0, END)
+            results.delete(0, tk.END)
             results.insert(0, "In {} trials, the probability of less than {} win(s) is: {}".format(n, k, solution_less_than))
         elif calculation == 'More than K successes':
-            results.delete(0, END)
+            results.delete(0, tk.END)
             results.insert(0, "In {} trials, the probability of more than {} win(s) is: {}".format(n, k, solution_more_than))
         else:
             return
@@ -753,7 +753,7 @@ def binomial_calc():
     bi_win.geometry("800x410")
     bi_win['bg']= '#7b9cd1'
     # Welcome label
-    welcome_label = tk.Label(bi_win, text="Binomial Statistics", pady=10, padx=30, relief=RAISED, borderwidth=15, bg='#fee3b5', font=('Helvetica',17))
+    welcome_label = tk.Label(bi_win, text="Binomial Statistics", pady=10, padx=30, relief=tk.RAISED, borderwidth=15, bg='#fee3b5', font=('Helvetica',17))
     # execution button
     calc_button=tk.Button(bi_win, text="Calculate Binomial Statistics (Click Here)", command=run_program, font=('Helvetica',17), border=3)
     # entry box for user input
@@ -769,9 +769,9 @@ def binomial_calc():
     num_success.insert(0, " ")
     results.insert(0, "The results will appear here!")
     # labels
-    trials_lab=tk.Label(bi_win, text='Events: N', font=('Helvetica',17), relief=RAISED, bg='#fee3b5')
-    prob_success_lab=tk.Label(bi_win, text='Prob of Success: P', font=('Helvetica',17), relief=RAISED, bg='#fee3b5')
-    num_success_lab=tk.Label(bi_win, text='Num of Successes: K', font=('Helvetica',17), relief=RAISED, bg='#fee3b5')
+    trials_lab=tk.Label(bi_win, text='Events: N', font=('Helvetica',17), relief=tk.RAISED, bg='#fee3b5')
+    prob_success_lab=tk.Label(bi_win, text='Prob of Success: P', font=('Helvetica',17), relief=tk.RAISED, bg='#fee3b5')
+    num_success_lab=tk.Label(bi_win, text='Num of Successes: K', font=('Helvetica',17), relief=tk.RAISED, bg='#fee3b5')
     # options drop down menu
     selection_1=StringVar()
     selection_1.set('At least K successes')
@@ -817,10 +817,10 @@ def poisson_calc():
         # display the solution in the results box
         calculation = selection_1.get()   
         if calculation ==  'Exactly X Occurances':
-            results.delete(0, END)
+            results.delete(0, tk.END)
             results.insert(0, "The probability of exactly {} successes (failures) with a likelihood of {} occurance is: {}".format(x_, ex_lam, solution_exact))
         if calculation ==  'At least 1 Occurance':
-            results.delete(0, END)
+            results.delete(0, tk.END)
             results.insert(0, "The probability of at least one occurance with a likelihood of {} occurance is: {}".format(ex_lam, solution_at_least_one))
     
     # window information
@@ -829,7 +829,7 @@ def poisson_calc():
     bi_win.geometry("1100x410")
     bi_win['bg']= '#7b9cd1'
     # Welcome label
-    welcome_label = tk.Label(bi_win, text="Poisson Statistics", pady=10, padx=30, relief=RAISED, borderwidth=15, bg='#fee3b5', font=('Helvetica',17))
+    welcome_label = tk.Label(bi_win, text="Poisson Statistics", pady=10, padx=30, relief=tk.RAISED, borderwidth=15, bg='#fee3b5', font=('Helvetica',17))
     # execution button
     calc_button=tk.Button(bi_win, text="Calculate Poisson Statistics (Click Here)", command=run_program, font=('Helvetica',17), border=3)
     # entry box for user input
@@ -842,8 +842,8 @@ def poisson_calc():
     x_var.insert(0, " ")
     results.insert(0, "The results will appear here!")
     # labels
-    ex_success_lab=tk.Label(bi_win, text='Prob of X Success(Failure) (lambda)', font=('Helvetica',17), relief=RAISED, bg='#fee3b5')
-    x_var_lab=tk.Label(bi_win, text='Occurances of X', font=('Helvetica',17), relief=RAISED, bg='#fee3b5')
+    ex_success_lab=tk.Label(bi_win, text='Prob of X Success(Failure) (lambda)', font=('Helvetica',17), relief=tk.RAISED, bg='#fee3b5')
+    x_var_lab=tk.Label(bi_win, text='Occurances of X', font=('Helvetica',17), relief=tk.RAISED, bg='#fee3b5')
     # options drop down menu
     selection_1=StringVar()
     selection_1.set('Exactly X Occurances')
@@ -879,7 +879,7 @@ univarbtn=tk.Button(statsapp, text="Univariate Statistics", command=univarstats,
 binomialbtn=tk.Button(statsapp, text="Binomial Statistics (n,p,k)", command=binomial_calc, font=('Helvetica',17))
 poissonbtn=tk.Button(statsapp, text="Poisson Statistics (lambda, x, e)", command=poisson_calc, font=('Helvetica',17))
 # Labels for welcome label
-welcome=tk.Label(statsapp, text="Select your calculation!", pady=10, padx=30, relief=RAISED, borderwidth=15, bg='#fee3b5', font=('Helvetica',22))
+welcome=tk.Label(statsapp, text="Select your calculation!", pady=10, padx=30, relief=tk.RAISED, borderwidth=15, bg='#fee3b5', font=('Helvetica',22))
 
 # place labels and buttons in main window
 welcome.grid(row=0, pady=10, padx=50)
@@ -895,5 +895,6 @@ multiple_4iv_btn.grid(row=9, pady=10, padx=30)
 multiple_5iv_btn.grid(row=10, pady=10, padx=30)
 # run program
 statsapp.mainloop()
+
 
 
