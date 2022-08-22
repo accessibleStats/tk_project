@@ -1,15 +1,10 @@
 """
-
 2 Independent Variables (with decimals)
-
 Tkinter multiple regression using numpy
-
-Jack Nickelson
 
 """
 
 
-from tkinter import *
 import tkinter as tk
 import numpy as np
 
@@ -87,26 +82,26 @@ drop_menu.add_cascade(label="File", menu=menu_ops)
 """
 
 # Labels for user input
-welcome_label=tk.Label(mlwindow, text="Welcome to the Multiple Linear Relationship estimator: Input the values for X and Y (separate with spacebar)", pady=10, padx=30, relief=RAISED, borderwidth=15)
-x_varLabel=tk.Label(mlwindow, text="Enter the values for X1:", pady=10, padx=30, relief=RAISED, borderwidth=15)
-x2_varLabel=tk.Label(mlwindow, text="Enter the values for X2:", pady=10, padx=30, relief=RAISED, borderwidth=15)    
-y_varLabel=tk.Label(mlwindow, text="Enter the values for Y:", pady=10, padx=30, relief=RAISED, borderwidth=15)
-display_Label=tk.Label(mlwindow, text="The estimated relationship is:", pady=10, padx=30, relief=RAISED, borderwidth=15, width=25)
+welcome_label=tk.Label(mlwindow, text="Welcome to the Multiple Linear Relationship estimator: Input the values for X and Y (separate with spacebar)", pady=10, padx=30, relief=tk.RAISED, borderwidth=15)
+x_varLabel=tk.Label(mlwindow, text="Enter the values for X1:", pady=10, padx=30, relief=tk.RAISED, borderwidth=15)
+x2_varLabel=tk.Label(mlwindow, text="Enter the values for X2:", pady=10, padx=30, relief=tk.RAISED, borderwidth=15)    
+y_varLabel=tk.Label(mlwindow, text="Enter the values for Y:", pady=10, padx=30, relief=tk.RAISED, borderwidth=15)
+display_Label=tk.Label(mlwindow, text="The estimated relationship is:", pady=10, padx=30, relief=tk.RAISED, borderwidth=15, width=25)
 
 # Entry boxes for user input
-x_varnum=StringVar()
-x2_varnum=StringVar()
+x_varnum=tk.StringVar()
+x2_varnum=tk.StringVar()
 
-y_varnum=StringVar()
+y_varnum=tk.StringVar()
 # Entry boxes for user input
-x_varnum=tk.Entry(mlwindow, textvariable=x_varnum, relief=RAISED, bd=5, borderwidth=15)
-x2_varnum=tk.Entry(mlwindow, textvariable=x2_varnum, relief=RAISED, bd=5, borderwidth=15)
-y_varnum=tk.Entry(mlwindow, textvariable=y_varnum, relief=RAISED, bd=5, borderwidth=15)
+x_varnum=tk.Entry(mlwindow, textvariable=x_varnum, relief=tk.RAISED, bd=5, borderwidth=15)
+x2_varnum=tk.Entry(mlwindow, textvariable=x2_varnum, relief=tk.RAISED, bd=5, borderwidth=15)
+y_varnum=tk.Entry(mlwindow, textvariable=y_varnum, relief=tk.RAISED, bd=5, borderwidth=15)
 
 # Button to generate Z score
-simplebtn=tk.Button(mlwindow, text="Calculate Linear Relationship", command=multiple_reg, relief=RAISED, borderwidth=15, highlightbackground="blue")
+simplebtn=tk.Button(mlwindow, text="Calculate Linear Relationship", command=multiple_reg, relief=tk.RAISED, borderwidth=15, highlightbackground="blue")
 # Display box
-display=tk.Entry(mlwindow, relief=RAISED, bd=5, borderwidth=10, highlightbackground="blue", width=70)
+display=tk.Entry(mlwindow, relief=tk.RAISED, bd=5, borderwidth=10, highlightbackground="blue", width=70)
 # Locations
 welcome_label.grid(row=0, columnspan=2)
 x_varLabel.grid(row=1, column=0)
