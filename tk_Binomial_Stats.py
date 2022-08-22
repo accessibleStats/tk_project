@@ -1,11 +1,8 @@
 """
-Binomial Statistics Program
-
-By: Jack Nickelson
-
+Binomial Stats Program
 """
 
-from tkinter import *
+
 import tkinter as tk
 
 
@@ -70,19 +67,19 @@ def run_program():
     # print solutions in display box
     calculation = selection_1.get()
     if calculation == 'At least K successes':
-        results.delete(0, END) 
+        results.delete(0, tk.END) 
         results.insert(0, "In {} trials, the probability of at least {} win(s) is: {}".format(n, k, solution_at_least))
     elif calculation ==  'Exactly K successes':
-        results.delete(0, END)
+        results.delete(0, tk.END)
         results.insert(0, "In {} trials, the probability of exactly {} win(s) is: {}".format(n, k, solution_exact))
     elif calculation == 'At most K successes':
-        results.delete(0, END)
+        results.delete(0, tk.END)
         results.insert(0, "In {} trials, the probability of at most {} win(s) is: {}".format(n, k, solution_at_most))
     elif calculation == 'Less than K successes':
-        results.delete(0, END)
+        results.delete(0, tk.END)
         results.insert(0, "In {} trials, the probability of less than {} win(s) is: {}".format(n, k, solution_less_than))
     elif calculation == 'More than K successes':
-        results.delete(0, END)
+        results.delete(0, tk.END)
         results.insert(0, "In {} trials, the probability of more than {} win(s) is: {}".format(n, k, solution_more_than))
     else:
         return
@@ -96,14 +93,14 @@ main_win.geometry("800x700")
 main_win['bg']= '#7b9cd1'
 
 # Welcome label
-welcome_label = tk.Label(main_win, text="Binomial Statistics", pady=10, padx=30, relief=RAISED, borderwidth=15, bg='#fee3b5', font=('Helvetica',17))
+welcome_label = tk.Label(main_win, text="Binomial Statistics", pady=10, padx=30, relief=tk.RAISED, borderwidth=15, bg='#fee3b5', font=('Helvetica',17))
 # execution button
 calc_button=tk.Button(main_win, text="Calculate Binomial Statistics (Click Here)", command=run_program, font=('Helvetica',17), border=3)
 
 # entry box for user input
-trials=StringVar()
-prob_success=StringVar()
-num_success=StringVar()
+trials=tk.StringVar()
+prob_success=tk.StringVar()
+num_success=tk.StringVar()
 trials = tk.Entry(main_win, width=5, font=('Helvetica',17), border=3)
 prob_success = tk.Entry(main_win, width=5, font=('Helvetica',17), border=3)
 num_success = tk.Entry(main_win, width=5, font=('Helvetica',17), border=3)
@@ -114,12 +111,12 @@ num_success.insert(0, " ")
 results.insert(0, "The results will appear here!")
 
 # labels
-trials_lab=tk.Label(text='Events: N', font=('Helvetica',17), relief=RAISED, bg='#fee3b5')
-prob_success_lab=tk.Label(text='Prob of Success: P', font=('Helvetica',17), relief=RAISED, bg='#fee3b5')
-num_success_lab=tk.Label(text='Num of Successes: K', font=('Helvetica',17), relief=RAISED, bg='#fee3b5')
+trials_lab=tk.Label(text='Events: N', font=('Helvetica',17), relief=tk.RAISED, bg='#fee3b5')
+prob_success_lab=tk.Label(text='Prob of Success: P', font=('Helvetica',17), relief=tk.RAISED, bg='#fee3b5')
+num_success_lab=tk.Label(text='Num of Successes: K', font=('Helvetica',17), relief=tk.RAISED, bg='#fee3b5')
 
 # options drop down menu
-selection_1=StringVar()
+selection_1=tk.StringVar()
 selection_1.set('At least K successes')
 option_sel = tk.OptionMenu(main_win, selection_1, 'At least K successes', 'Exactly K successes', 'At most K successes', 'Less than K successes', 'More than K successes')
 
@@ -146,26 +143,3 @@ main_win.mainloop()
 
 
 
-
-
-
-
-
-"""
-class Binomial:
-    # class for binomial data
-    def fact(x):
-        if x <= 0:
-            return 1
-        else:
-            return x * fact(x-1)
-    def __init__(self, num_trials, prob_success, successes):
-        num_trials = int(num_trials)
-        prob_success = float(prob_success)
-        successes = int(successes)
-        self.exactly = fact(num_trials) / (fact(successes) * fact(num_trials - successes)) * (prob_success**successes) * (1-prob_success)**(num_trials-successes)
-        self.at_least = []
-        self.at_most = []
-        self.less_than = []
-        self.more_than = []
-"""
