@@ -1,12 +1,7 @@
 """
-
 Simple Linear Regression tk
-Jack Nickelson
-
 """
-
 import tkinter as tk
-from tkinter import *
 import numpy as np
 
 slwindow=tk.Tk()
@@ -35,14 +30,14 @@ def simple_linear():
     display.insert(0, "Y = {} + {}X".format(beta0, beta1))
  
 # Labels for user input
-welcome_label=tk.Label(slwindow, text="Welcome to the Simple Linear Relationship estimator: Input the values for X and Y (separate with spacebar)", pady=10, padx=30, relief=RAISED, borderwidth=15)
-x_varLabel=tk.Label(slwindow, text="Enter the values for X:", pady=10, padx=30, relief=RAISED, borderwidth=15)
-y_varLabel=tk.Label(slwindow, text="Enter the values for Y:", pady=10, padx=30, relief=RAISED, borderwidth=15)
-display_Label=tk.Label(slwindow, text="The estimated relationship is:", pady=10, padx=30, relief=RAISED, borderwidth=15, width=25)
+welcome_label=tk.Label(slwindow, text="Welcome to the Simple Linear Relationship estimator: Input the values for X and Y (separate with spacebar)", pady=10, padx=30, relief=tk.RAISED, borderwidth=15)
+x_varLabel=tk.Label(slwindow, text="Enter the values for X:", pady=10, padx=30, relief=tk.RAISED, borderwidth=15)
+y_varLabel=tk.Label(slwindow, text="Enter the values for Y:", pady=10, padx=30, relief=tk.RAISED, borderwidth=15)
+display_Label=tk.Label(slwindow, text="The estimated relationship is:", pady=10, padx=30, relief=tk.RAISED, borderwidth=15, width=25)
 
 # Entry boxes for user input
-x_varnum=tk.Entry(slwindow, relief=RAISED, bd=5)
-y_varnum=tk.Entry(slwindow, relief=RAISED, bd=5)
+x_varnum=tk.Entry(slwindow, relief=tk.RAISED, bd=5)
+y_varnum=tk.Entry(slwindow, relief=tk.RAISED, bd=5)
 
 # Button to generate Z score
 simplebtn=tk.Button(slwindow, text="Calculate Linear Relationship", command=simple_linear)
