@@ -1,12 +1,8 @@
 """
 Statistics using Poisson Distribution
 
-Jack Nickelson
-
 """
 
-
-from tkinter import *
 import tkinter as tk
 
 ########## Poisson Statistics #################
@@ -36,10 +32,10 @@ def run_program():
     # display the solution in the results box
     calculation = selection_1.get()   
     if calculation ==  'Exactly X Occurances':
-        results.delete(0, END)
+        results.delete(0, tk.END)
         results.insert(0, "The probability of exactly {} successes (failures) with a likelihood of {} occurance is: {}".format(x_, ex_lam, solution_exact))
     if calculation ==  'At least 1 Occurance':
-        results.delete(0, END)
+        results.delete(0, tk.END)
         results.insert(0, "The probability of at least one occurance with a likelihood of {} occurance is: {}".format(ex_lam, solution_at_least_one))
  
 # window information
@@ -48,12 +44,12 @@ bi_win.title("Poisson Statistics")
 bi_win.geometry("1100x410")
 bi_win['bg']= '#7b9cd1'
 # Welcome label
-welcome_label = tk.Label(bi_win, text="Poisson Statistics", pady=10, padx=30, relief=RAISED, borderwidth=15, bg='#fee3b5', font=('Helvetica',17))
+welcome_label = tk.Label(bi_win, text="Poisson Statistics", pady=10, padx=30, relief=tk.RAISED, borderwidth=15, bg='#fee3b5', font=('Helvetica',17))
 # execution button
 calc_button=tk.Button(bi_win, text="Calculate Poisson Statistics (Click Here)", command=run_program, font=('Helvetica',17), border=3)
 # entry box for user input
-ex_success=StringVar()
-x_var=StringVar()
+ex_success=tk.StringVar()
+x_var=tk.StringVar()
 ex_success = tk.Entry(bi_win, width=5, font=('Helvetica',17), border=3)
 x_var = tk.Entry(bi_win, width=5, font=('Helvetica',17), border=3)
 results = tk.Entry(bi_win, width=95, font=('Helvetica',17), border=3)
@@ -61,11 +57,11 @@ ex_success.insert(0, " ")
 x_var.insert(0, " ")
 results.insert(0, "The results will appear here!")
 # labels
-ex_success_lab=tk.Label(bi_win, text='Prob of X Success(Failure) (lambda)', font=('Helvetica',17), relief=RAISED, bg='#fee3b5')
-x_var_lab=tk.Label(bi_win, text='Occurances of X', font=('Helvetica',17), relief=RAISED, bg='#fee3b5')
+ex_success_lab=tk.Label(bi_win, text='Prob of X Success(Failure) (lambda)', font=('Helvetica',17), relief=tk.RAISED, bg='#fee3b5')
+x_var_lab=tk.Label(bi_win, text='Occurances of X', font=('Helvetica',17), relief=tk.RAISED, bg='#fee3b5')
 
 # options drop down menu
-selection_1=StringVar()
+selection_1=tk.StringVar()
 selection_1.set('Exactly X Occurances')
 option_sel = tk.OptionMenu(bi_win, selection_1, 'Exactly X Occurances', 'At least 1 Occurance')
 
@@ -81,4 +77,3 @@ results.grid(row=7, pady=10, padx=50)
 
 #run program
 bi_win.mainloop()
-
