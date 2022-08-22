@@ -1,16 +1,13 @@
 """
 Univariate Descriptive Statistics Program
 
-By: Jack Nickelson
-
-This program is used to automate the calcualtion of univariate descriptive statistics. The user enters data separated by a comma. 
-The program then return useful univariate statistics. This program is an attempt at using classes
+This program is used to generate univariate descriptive statistics. The user enters data separated by a comma. 
+The program then return useful information.
 """
 
-from tkinter import *
 import tkinter as tk
 import numpy as np
-import statistics
+from statistics import multimode, variance, stdev
 
 class Univariate:
     """class for univariate exploration"""
@@ -24,9 +21,9 @@ class Univariate:
             self.median = (self.sort[self.midpoint]) 
         else: 
             self.median = (self.sort[self.midpoint] + self.sort[self.midpoint +1])/2 
-        self.mode = statistics.multimode(userdata)
-        self.var = statistics.variance(userdata)
-        self.std = statistics.stdev(userdata)
+        self.mode = multimode(userdata)
+        self.var = variance(userdata)
+        self.std = stdev(userdata)
         self.first_quantile_in = np.quantile(userdata, .25)
         self.third_quantile_in = np.quantile(userdata, .75)
         self.iqr_in = self.third_quantile_in - self.first_quantile_in
@@ -38,14 +35,14 @@ def calculate_stats():
     x_var = [int(x) for x in x_values.get().split(',')]
     x_var = Univariate(x_var)
     # clear entry boxes of text with each click
-    meanvalue.delete(0,END)
-    medianvalue.delete(0,END)
-    modevalue.delete(0,END)
-    variancevalue.delete(0,END)
-    standarddev.delete(0,END)
-    quartilevalues_in.delete(0,END)
-    iqr_in.delete(0,END)
-    outliers.delete(0,END)
+    meanvalue.delete(0,tk.END)
+    medianvalue.delete(0,tk.END)
+    modevalue.delete(0,tk.END)
+    variancevalue.delete(0,tk.END)
+    standarddev.delete(0,tk.END)
+    quartilevalues_in.delete(0,tk.END)
+    iqr_in.delete(0,tk.END)
+    outliers.delete(0,tk.END)
     # insert values into entry boxes
     meanvalue.insert(0,"Mean = {}".format(x_var.mean))
     medianvalue.insert(0, "Median = {}".format(x_var.median))
@@ -66,12 +63,12 @@ main_win.geometry("600x700")
 main_win['bg']= '#7b9cd1'
 
 # Welcome label
-welcome_label = tk.Label(main_win, text="Univariate Descriptive Statistics", pady=10, padx=30, relief=RAISED, borderwidth=15, bg='#fee3b5', font=('Helvetica',17))
+welcome_label = tk.Label(main_win, text="Univariate Descriptive Statistics", pady=10, padx=30, relief=tk.RAISED, borderwidth=15, bg='#fee3b5', font=('Helvetica',17))
 # execution button
 calc_button=tk.Button(main_win, text="Calculate Univariate Statistics (Click Here)", command=calculate_stats, font=('Helvetica',17))
 
 # entry box for user input
-x_values=StringVar()
+x_values=tk.StringVar()
 x_values = tk.Entry(main_win, width=45, font=('Helvetica',17))
 meanvalue= tk.Entry(main_win, width=45, font=('Helvetica',17))
 medianvalue= tk.Entry(main_win, width=45, font=('Helvetica',17))
